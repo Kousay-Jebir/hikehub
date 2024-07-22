@@ -17,7 +17,7 @@ export class User {
   userName: string;
 
   @Column("simple-array")
-  roles: string[];
+  roles: string;
 
   @OneToOne(() => UserProfile, userProfile => userProfile.user)
   userProfile: UserProfile;

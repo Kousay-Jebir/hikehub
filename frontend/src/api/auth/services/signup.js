@@ -1,10 +1,12 @@
 import BASE_URL from "../../BASE_URL";
 import axios from "axios";
+import { SIGNUP } from "../routes";
 
-export default async function signUp(email, password, roles){
+export default async function signUp(userName,email, password, roles){
     try {
-      const response = await axios.post(BASE_URL, {
+      const response = await axios.post(SIGNUP, {
         email,
+        userName,
         password,
         roles
       });

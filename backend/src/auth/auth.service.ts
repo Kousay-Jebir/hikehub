@@ -28,12 +28,14 @@ export class AuthService {
     userName:string,
     email: string,
     pass: string,
-    roles:string[]
-  ): Promise<{ access_token: string }> {
+    roles:string
+  ): Promise<{ id:number,access_token: string }> {
     const user = await this.usersService.createUser(userName,email,pass,roles);
     const payload = { username: user.userName, sub: user.id, roles: user.roles };
+    const access_token = await this.jwtService.signAsync(payload);
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      id:user.id,
+      access_token
     };
   }
 }

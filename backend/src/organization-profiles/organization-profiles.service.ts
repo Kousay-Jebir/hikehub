@@ -1,26 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrganizationProfile } from './entities/organization-profile.entity';
 import { CreateOrganizationProfileDto } from './dto/create-organization-profile.dto';
 import { UpdateOrganizationProfileDto } from './dto/update-organization-profile.dto';
 
 @Injectable()
 export class OrganizationProfilesService {
-  create(createOrganizationProfileDto: CreateOrganizationProfileDto) {
-    return 'This action adds a new organizationProfile';
+  constructor(
+    @InjectRepository(OrganizationProfile)
+    private readonly organizationProfileRepository: Repository<OrganizationProfile>,
+  ) {}
+
+  async create(createOrganizationProfileDto: CreateOrganizationProfileDto): Promise<OrganizationProfile> {
+    const organizationProfile = this.organizationProfileRepository.create(createOrganizationProfileDto);
+    return await this.organizationProfileRepository.save(organizationProfile);
   }
 
-  findAll() {
-    return `This action returns all organizationProfiles`;
+  async findAll(): Promise<OrganizationProfile[]> {
+    return await this.organizationProfileRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} organizationProfile`;
+  async findOne(id: number): Promise<OrganizationProfile> {
+    const organizationProfile = await this.organizationProfileRepository.findOneBy({id});
+    if (!organizationProfile) {
+      throw new Error(`OrganizationProfile with ID ${id} not found`);
+    }
+    return organizationProfile;
   }
 
-  update(id: number, updateOrganizationProfileDto: UpdateOrganizationProfileDto) {
-    return `This action updates a #${id} organizationProfile`;
+  async update(id: number, updateOrganizationProfileDto: UpdateOrganizationProfileDto): Promise<OrganizationProfile> {
+    try {
+      // Load existing profile
+      const existingProfile = await this.organizationProfileRepository.findOneBy({id});
+      if (!existingProfile) {
+        throw new NotFoundException(`OrganizationProfile with ID ${id} not found`);
+      }
+
+      // Update with new data
+      const updatedProfile = { ...existingProfile, ...updateOrganizationProfileDto };
+
+      // Save updated profile
+      return await this.organizationProfileRepository.save(updatedProfile);
+    } catch (error) {
+      console.error('Error updating organization profile:', error);
+      throw new InternalServerErrorException('Failed to update organization profile');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} organizationProfile`;
+  async remove(id: number): Promise<void> {
+    const result = await this.organizationProfileRepository.delete(id);
+    if (result.affected === 0) {
+      throw new Error(`OrganizationProfile with ID ${id} not found`);
+    }
   }
 }

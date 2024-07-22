@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import signUp from '../../api/auth/services/signup';
 
 function Copyright(props) {
   return (
@@ -26,18 +28,25 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [role, setRole] = React.useState('');
+
+  const handleRoleChange = (event) => {
+    setRole(event.target.value);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      userName: data.get('userName'),
       email: data.get('email'),
       password: data.get('password'),
+      role,
     });
+    const result = await signUp(data.get('userName'), data.get('email'), data.get('password'), role.toLowerCase());
   };
 
   return (
@@ -60,25 +69,14 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  autoComplete="new-username"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -101,6 +99,22 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="role-label">Role</InputLabel>
+                  <Select
+                    labelId="role-label"
+                    id="role"
+                    value={role}
+                    onChange={handleRoleChange}
+                    label="Role"
+                    required
+                  >
+                    <MenuItem value="Hiker">Hiker</MenuItem>
+                    <MenuItem value="Organizer">Organizer</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel

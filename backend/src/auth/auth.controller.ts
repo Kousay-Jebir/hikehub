@@ -6,10 +6,12 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards
+  UseGuards,
+  UseInterceptors
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { RoleBasedProfileInterceptor } from 'src/common/interceptors/role-based-profile.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +25,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('signup')
+  @UseInterceptors(RoleBasedProfileInterceptor)
   signUp(@Body() signUpDto: Record<string, any>) {
     return this.authService.signUp(signUpDto.userName,signUpDto.email, signUpDto.password, signUpDto.roles);
   }
