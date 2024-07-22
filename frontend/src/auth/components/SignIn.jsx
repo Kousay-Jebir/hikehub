@@ -42,6 +42,7 @@ export default function SignIn() {
     });
 
     const result = await signIn(data.get('email'),data.get('password'))
+    console.log(result);
   };
 
   return (

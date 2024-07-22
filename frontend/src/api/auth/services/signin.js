@@ -5,7 +5,7 @@ import { LOGIN } from '../routes';
 // Login function
 export default async function signIn(email,password){
   try {
-    const response = axios.post(
+    const response = await axios.post(
       LOGIN,
       { email:email, password:password }, // JSON body with email and password
       {
