@@ -3,7 +3,6 @@ import { User } from 'src/users/user.entity';
 import { UserSetting } from 'src/user-settings/entities/user-setting.entity';
 import { Participation } from 'src/participations/entities/participation.entity';
 import { Review } from 'src/reviews/entities/review.entity';
-
 @Entity()
 export class UserProfile {
   @PrimaryGeneratedColumn()
