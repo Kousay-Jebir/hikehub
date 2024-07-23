@@ -6,12 +6,12 @@ import SignUp from './auth/components/SignUp';
 import ProfileSetupStepper from './profile-management/profile-setup/ProfileSetupStepper';
 
 function App() {
-  const isSignin = false;
+  const isSignin = true;
   return (
     <div className="App">
-      {/* {
+      {
         isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
-      } */}
+      }
       <ProfileSetupStepper/>
     </div>
   );

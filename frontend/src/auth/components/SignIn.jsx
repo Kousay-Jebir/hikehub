@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import signIn from '../../api/auth/services/signin';
+import AuthContext from '../context/AuthContext';
 
 function Copyright(props) {
   return (
@@ -33,16 +34,11 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+  const authData = React.useContext(AuthContext);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-
-    const result = await signIn(data.get('email'),data.get('password'))
-    console.log(result);
+    authData.login(data.get('email'),data.get('password'));
   };
 
   return (
