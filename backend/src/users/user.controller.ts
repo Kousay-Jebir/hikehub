@@ -1,0 +1,37 @@
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, BadRequestException } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    const { userName, email, password, roles } = createUserDto;
+    if (!userName || !email || !password || !roles) {
+      throw new BadRequestException('All fields are required');
+    }
+    return this.usersService.createUser(userName, email, password, roles);
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: number): Promise<User> {
+    const user = await this.usersService.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: number): Promise<void> {
+    const user = await this.usersService.findById(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    await this.usersService.remove(id);
+  }
+}

@@ -20,7 +20,7 @@ export class OrganizationProfile {
   @Column('json', { nullable: true })
   social: object;
 
-  @OneToOne(() => User, user => user.organizationProfile)
+  @OneToOne(() => User, user => user.organizationProfile, { onDelete:'CASCADE'})
   @JoinColumn({ name: 'userId' })
   user: User;
 
