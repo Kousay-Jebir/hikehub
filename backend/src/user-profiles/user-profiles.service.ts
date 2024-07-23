@@ -43,6 +43,10 @@ export class UserProfilesService {
     }
     return userProfile;
   }
+  async findUserProfileByUserId(id:number): Promise<number> {
+    const profileId = (await this.userProfileRepository.findOneBy({userId:id})).id;
+    return profileId
+  }
 
   async update(userId: number, updateUserProfileDto: UpdateUserProfileDto): Promise<UserProfile> {
     // Find the UserProfile by userId

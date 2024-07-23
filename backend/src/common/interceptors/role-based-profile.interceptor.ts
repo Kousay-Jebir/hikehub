@@ -13,12 +13,15 @@ import { UserProfilesService } from 'src/user-profiles/user-profiles.service';
 import { OrganizationProfilesService } from 'src/organization-profiles/organization-profiles.service';
 import { CreateUserProfileDto } from 'src/user-profiles/dto/create-user-profile.dto';
 import { CreateOrganizationProfileDto } from 'src/organization-profiles/dto/create-organization-profile.dto';
+import { CreateUserSettingDto } from 'src/user-settings/dto/create-user-setting.dto';
+import { UserSettingsService } from 'src/user-settings/user-settings.service';
 
 @Injectable()
 export class RoleBasedProfileInterceptor implements NestInterceptor {
   constructor(
     private readonly userProfilesService: UserProfilesService,
     private readonly organizationProfilesService: OrganizationProfilesService,
+    private readonly userSettingsService: UserSettingsService
   ) {}
 
   intercept(
@@ -48,7 +51,16 @@ export class RoleBasedProfileInterceptor implements NestInterceptor {
                 phoneNumber: '',
                 genderCode: '',
               };
-              await this.userProfilesService.create(userProfileDto);
+              const userProfile=await this.userProfilesService.create(userProfileDto);
+
+              const userSettingDto: CreateUserSettingDto = {
+                userProfileId: userProfile.id, // Use the profile ID
+                isEmailExposed: true,
+                isAcceptingFriendRequests: true,
+                phoneNumberPrivacy: false,
+                birthdayPrivacy: false
+              };
+              await this.userSettingsService.create(userSettingDto);
             }
 
             if (roles.includes(Role.Organizer.toLowerCase())) {

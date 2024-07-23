@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
 import { UserProfilesModule } from 'src/user-profiles/user-profiles.module';
 import { OrganizationProfilesModule } from 'src/organization-profiles/organization-profiles.module';
+import { UserSettingsModule } from 'src/user-settings/user-settings.module';
 
 
 @Module({
@@ -14,6 +15,7 @@ import { OrganizationProfilesModule } from 'src/organization-profiles/organizati
     UsersModule,
     UserProfilesModule,
     OrganizationProfilesModule,
+    UserSettingsModule,
     JwtModule.register({
       global: true,
       secret: process.env.SECRET || jwtConstants.secret,
