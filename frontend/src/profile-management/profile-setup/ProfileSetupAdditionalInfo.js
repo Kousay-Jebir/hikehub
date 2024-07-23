@@ -39,12 +39,12 @@ const ProfileSetupAdditionalInfo = ({ formData, handleChange }) => (
           <InputLabel>Gender</InputLabel>
           <Select
             label="Gender"
-            name="gender"
+            name="genderCode"
             value={formData.genderCode}
             onChange={handleChange}
           >
-            <MenuItem value="Tunisia">Male</MenuItem>
-            <MenuItem value="International">Female</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
           </Select>
         </FormControl>
       </Grid>

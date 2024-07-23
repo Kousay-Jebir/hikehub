@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Stepper, Step, StepLabel, Button, Typography } from '@mui/material';
 import ProfileSetupAboutYou from './ProfileSetupAboutYou';
 import ProfileSetupAdditionalInfo from './ProfileSetupAdditionalInfo';
+import AuthContext from '../../auth/context/AuthContext';
+import editProfile from '../../api/profile-management/services/editProfile';
 
 const steps = ['About You', 'Additional Information'];
 
 const ProfileSetupStepper = () => {
+  const authData = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [formData, setFormData] = useState({
@@ -14,8 +17,8 @@ const ProfileSetupStepper = () => {
     bio: '',
     nationality: 'Tunisia',
     phoneNumber: '',
-    gender: '',
-    birthday: ''
+    genderCode: '',
+    birthday: null
   });
 
   const isStepOptional = (step) => step === 1;
@@ -48,10 +51,24 @@ const ProfileSetupStepper = () => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log('Form Data:', formData);
-    // Handle final form submission logic here
+  const handleSubmit = async () => {
+    // Ensure genderCode is set to 'M' or 'F'
+    const normalizedFormData = {
+      ...formData,
+      genderCode: formData.genderCode.toUpperCase() === 'MALE' ? 'M' : 'F'
+    };
+  
+    try {
+      console.log('Form Data:', normalizedFormData);
+      console.log(authData);
+      await editProfile(authData.user.accessToken, authData.user.userId, normalizedFormData);
+      // Optionally handle success (e.g., show success message, redirect)
+    } catch (error) {
+      console.error('Error editing profile:', error);
+      // Handle error (e.g., show error message)
+    }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

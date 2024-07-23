@@ -11,7 +11,7 @@ export default function AuthProvider({ children }) {
     const login = async (email,password)=>{
       const authData = await signIn(email,password);
       setUser({
-        accessToken : authData.accessToken,
+        accessToken : authData.access_token,
         userId : authData.id,
         roles: authData.roles
       })
