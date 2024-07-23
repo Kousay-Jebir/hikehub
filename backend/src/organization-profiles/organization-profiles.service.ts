@@ -29,7 +29,7 @@ export class OrganizationProfilesService {
     return organizationProfile;
   }
 
-  async update(id: number, updateOrganizationProfileDto: UpdateOrganizationProfileDto): Promise<OrganizationProfile> {
+  /* async update(id: number, updateOrganizationProfileDto: UpdateOrganizationProfileDto): Promise<OrganizationProfile> {
     try {
       // Load existing profile
       const existingProfile = await this.organizationProfileRepository.findOneBy({id});
@@ -46,6 +46,17 @@ export class OrganizationProfilesService {
       console.error('Error updating organization profile:', error);
       throw new InternalServerErrorException('Failed to update organization profile');
     }
+  } */
+
+  async update(userId: number,updateOrganizationProfileDto: UpdateOrganizationProfileDto): Promise<OrganizationProfile> {
+    
+    const organizationProfile = await this.organizationProfileRepository.findOneBy({userId});
+    if(!organizationProfile) {
+      throw new NotFoundException(`Organization profile with userId#${userId} not found`);
+    }
+    await this.organizationProfileRepository.update({userId},updateOrganizationProfileDto);
+    const updatedOrganizationProfile = await this.organizationProfileRepository.findOneBy({userId});
+    return updatedOrganizationProfile
   }
 
   async remove(id: number): Promise<void> {
