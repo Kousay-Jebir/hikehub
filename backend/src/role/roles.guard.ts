@@ -23,6 +23,8 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
     const resourceOwnerId = request.params.id; // Adjust based on how you identify the resource owner
 
+    console.log(user)
+
     if (requiredRoles) {
       if (!requiredRoles.some((role) => user.roles?.includes(role))) {
         throw new UnauthorizedException('You do not have the required roles.');
@@ -30,7 +32,7 @@ export class RolesGuard implements CanActivate {
     }
 
     if (requiresOwnership) {
-      if (user.id !== Number(resourceOwnerId)) {
+      if (user.sub !== Number(resourceOwnerId)) {
         throw new UnauthorizedException('You are not the owner of this resource.');
       }
     }

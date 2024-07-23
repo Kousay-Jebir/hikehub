@@ -44,15 +44,25 @@ export class UserProfilesService {
     return userProfile;
   }
 
-  async update(id: number, updateUserProfileDto: UpdateUserProfileDto): Promise<UserProfile> {
-    await this.userProfileRepository.update(id, updateUserProfileDto);
-    const updatedUserProfile = await this.userProfileRepository.findOneBy({id});
-    if (!updatedUserProfile) {
-      throw new NotFoundException(`UserProfile #${id} not found`);
+  async update(userId: number, updateUserProfileDto: UpdateUserProfileDto): Promise<UserProfile> {
+    // Find the UserProfile by userId
+    const userProfile = await this.userProfileRepository.findOneBy({ userId });
+  
+    // If UserProfile not found, throw NotFoundException
+    if (!userProfile) {
+      throw new NotFoundException(`UserProfile with userId #${userId} not found`);
     }
+  
+    // Update the UserProfile
+    await this.userProfileRepository.update({ userId }, updateUserProfileDto);
+  
+    // Fetch the updated UserProfile
+    const updatedUserProfile = await this.userProfileRepository.findOneBy({ userId });
+  
+    // Return the updated UserProfile
     return updatedUserProfile;
   }
-
+  
   async remove(id: number): Promise<void> {
     const deleteResult = await this.userProfileRepository.delete(id);
     if (!deleteResult.affected) {
