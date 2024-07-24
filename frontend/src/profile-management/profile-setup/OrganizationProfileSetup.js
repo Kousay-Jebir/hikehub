@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../../auth/context/AuthContext';
 import editProfile from '../../api/profile-management/services/editProfile';
+import { Link } from 'react-router-dom';
 
 const OrganizationProfileSetup = () => {
     const authData = useContext(AuthContext)
@@ -200,6 +201,7 @@ const OrganizationProfileSetup = () => {
                     Submit
                 </Button>
             </Grid>
+            <Link to={"/setup/hiker-profile"}>clickme</Link>
         </Box>
     );
 };

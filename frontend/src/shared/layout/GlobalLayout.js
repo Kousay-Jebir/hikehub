@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import Navbar from '../navbar/Navbar';
+import { Outlet } from 'react-router-dom';
 
 const GlobalLayout = ({children}) => {
     return (
@@ -14,7 +15,7 @@ const GlobalLayout = ({children}) => {
             <Grid item container>
                 <Grid item xs={false} sm={1} /> {/* Empty column for spacing on small screens */}
                 <Grid item xs={12} sm={10}>
-                    {children}
+                    <Outlet></Outlet>
                 </Grid>
                 <Grid item xs={false} sm={1} /> {/* Empty column for spacing on small screens */}
             </Grid>

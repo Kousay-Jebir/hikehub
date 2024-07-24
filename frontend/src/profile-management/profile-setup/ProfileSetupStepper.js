@@ -4,6 +4,7 @@ import ProfileSetupAboutYou from './ProfileSetupAboutYou';
 import ProfileSetupAdditionalInfo from './ProfileSetupAdditionalInfo';
 import AuthContext from '../../auth/context/AuthContext';
 import editProfile from '../../api/profile-management/services/editProfile';
+import { Link } from 'react-router-dom';
 
 const steps = ['About You', 'Additional Information'];
 
@@ -138,6 +139,7 @@ const ProfileSetupStepper = () => {
           </Box>
         </React.Fragment>
       )}
+      
     </Box>
   );
 };
