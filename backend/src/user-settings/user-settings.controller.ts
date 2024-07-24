@@ -37,7 +37,7 @@ export class UserSettingsController {
   @Ownership()
   async update(@Param('id') id: string, @Body() updateUserSettingDto: UpdateUserSettingDto) {
     const userProfileId = await this.userProfileService.findUserProfileByUserId(+id)
-    return this.userSettingsService.update(+id, updateUserSettingDto);
+    return this.userSettingsService.update(userProfileId, updateUserSettingDto);
   }
 
   @Delete(':id')
