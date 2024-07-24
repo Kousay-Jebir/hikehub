@@ -17,7 +17,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import AuthContext from '../../auth/context/AuthContext';
 
-function ResponsiveAppBar() {
+export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const authData = React.useContext(AuthContext);
@@ -156,5 +156,3 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-
-export default ResponsiveAppBar;
