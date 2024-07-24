@@ -38,4 +38,6 @@ export class OrganizationProfilesController {
   remove(@Param('id') id: string) {
     return this.organizationProfilesService.remove(+id);
   }
+
+ 
 }

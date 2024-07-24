@@ -16,6 +16,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import AuthContext from '../../auth/context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -24,6 +25,7 @@ export default function Navbar() {
   const { isLoggedIn } = authData;
   const pages = isLoggedIn ? ['Feed', 'Recommendations'] : ['Login', 'Signup'];
   const settings = ['Profile', 'Account', 'Logout'];
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -76,11 +78,16 @@ export default function Navbar() {
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
+              {/* pages.map((page) => (
                 <Button key={page} sx={{ mx: 1, color: 'inherit' }}>
                   {page}
                 </Button>
-              ))}
+              )) */
+      
+              !isLoggedIn ? <><Button onClick={()=>{navigate('/signin')}} sx={{ mx: 1, color: 'inherit' }}>LOGIN</Button> <Button onClick={()=>{navigate('/signup')}} sx={{ mx: 1, color: 'inherit' }}>SIGNUP</Button></>:
+              <><Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>FEED</Button> <Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button></>
+              
+              }
             </Box>
 
             {authData.isLoggedIn ? <IconButton

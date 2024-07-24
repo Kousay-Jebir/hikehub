@@ -65,4 +65,10 @@ export class OrganizationProfilesService {
       throw new Error(`OrganizationProfile with ID ${id} not found`);
     }
   }
+
+  async findOrganizationProfileByUserId(id:number): Promise<number> {
+    const profileId = (await this.organizationProfileRepository.findOneBy({userId:id})).id;
+    console.log(profileId);
+    return profileId
+  }
 }

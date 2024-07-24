@@ -12,6 +12,8 @@ import ProfileSetupPage from './profile-management/profile-setup/ProfileSetupPag
 import { Route, Routes } from 'react-router-dom';
 import GlobalLayout from './shared/layout/GlobalLayout';
 import AuthRequired from './shared/components/AuthRequired';
+import EventCard from './event-management/EventCard';
+import Events from './event-management/Events';
 
 
 function App() {
@@ -29,6 +31,7 @@ function App() {
       <ProfileSettings></ProfileSettings> */}
       {/* <ProfileSetupPage></ProfileSetupPage> */}
       <Routes>
+        <Route path='/' element={<Events></Events>} />
           <Route path='/signin' element={<SignIn></SignIn>}/>
           <Route path='/signup' element={<SignUp></SignUp>}/>
           
