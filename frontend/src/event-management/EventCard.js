@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
@@ -15,7 +14,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EventIcon from '@mui/icons-material/Event'; // Importing the EventIcon for end date
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,9 +31,25 @@ const ExpandMore = styled((props) => {
 
 export default function EventCard({ event }) {
   const [expanded, setExpanded] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleParticipate = () => {
+    // Handle participate action here
+    console.log('Participate clicked');
+    handleClose(); // Close the menu
   };
 
   return (
@@ -44,9 +61,24 @@ export default function EventCard({ event }) {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <>
+            <IconButton aria-label="settings" onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              PaperProps={{
+                sx: {
+                  maxHeight: 48 * 4.5,
+                  width: '20ch',
+                },
+              }}
+            >
+              <MenuItem onClick={handleParticipate}>Participate</MenuItem>
+            </Menu>
+          </>
         }
         title={event.title}
         subheader={new Date(event.startDate).toLocaleDateString()}
@@ -81,7 +113,7 @@ export default function EventCard({ event }) {
           )}
           {event.endDate && (
             <Typography paragraph>
-              <EventIcon /> {new Date(event.endDate).toLocaleDateString()}
+              <CalendarTodayIcon /> {new Date(event.endDate).toLocaleDateString()}
             </Typography>
           )}
         </CardContent>
