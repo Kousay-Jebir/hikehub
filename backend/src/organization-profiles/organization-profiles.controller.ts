@@ -20,6 +20,11 @@ export class OrganizationProfilesController {
     return this.organizationProfilesService.findAll();
   }
 
+  @Get("user/:id")
+  async getOrganizationProfileIdByUserId(@Param('id') id: string){
+    return await this.organizationProfilesService.findOrganizationProfileByUserId(+id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.organizationProfilesService.findOne(+id);

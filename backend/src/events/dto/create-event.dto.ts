@@ -1,27 +1,32 @@
-import { IsString, IsOptional, IsDate, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsNumber, ValidateNested, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
+import { CreateHikeDto } from 'src/hikes/dto/create-hike.dto';
 
 export class CreateEventDto {
   @IsString()
   title: string;
 
-  @IsString()
   @IsOptional()
+  @IsString()
   description?: string;
 
-  @IsDate()
-  @Type(() => Date)
-  startDate: Date;
+  @IsDateString()
+  startDate: string;
 
-  @IsDate()
   @IsOptional()
-  @Type(() => Date)
-  endDate?: Date;
+  @IsDateString()
+  endDate?: string;
 
+  @IsOptional()
   @IsString()
-  @IsOptional()
   location?: string;
 
   @IsNumber()
   organizerId: number;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateHikeDto)
+  hikes?: CreateHikeDto[];
 }

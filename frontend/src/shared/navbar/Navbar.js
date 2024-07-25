@@ -85,7 +85,9 @@ export default function Navbar() {
               )) */
       
               !isLoggedIn ? <><Button onClick={()=>{navigate('/signin')}} sx={{ mx: 1, color: 'inherit' }}>LOGIN</Button> <Button onClick={()=>{navigate('/signup')}} sx={{ mx: 1, color: 'inherit' }}>SIGNUP</Button></>:
-              <><Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>FEED</Button> <Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button></>
+              <>{authData.user.roles.includes("organizer") ? 
+                <Button onClick={()=>{navigate('/events/new')}} sx={{ mx: 1, color: 'red' }}>POST EVENT</Button>
+                :<Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>FEED</Button>} <Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button></>
               
               }
             </Box>

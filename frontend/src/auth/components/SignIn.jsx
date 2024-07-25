@@ -110,7 +110,7 @@ export default function SignIn() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
-        <RouterLink to={"/"}>hi</RouterLink>
+        <RouterLink to={"/events/new"}>hi</RouterLink>
       </Container>
     </ThemeProvider>
   );

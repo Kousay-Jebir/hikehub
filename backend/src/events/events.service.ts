@@ -6,17 +6,19 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 import { OrganizationProfile } from 'src/organization-profiles/entities/organization-profile.entity';
 import { OrganizationProfilesService } from 'src/organization-profiles/organization-profiles.service';
+import { HikesService } from 'src/hikes/hikes.service';
 
 @Injectable()
 export class EventsService {
   constructor(
     @InjectRepository(Event)
     private readonly eventRepository: Repository<Event>,
-    private readonly organizationProfileService:OrganizationProfilesService
+    private readonly organizationProfileService:OrganizationProfilesService,
+    private readonly hikesService: HikesService
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
-    const { organizerId, ...eventData } = createEventDto;
+    const { organizerId, hikes: hikeDtos, ...eventData } = createEventDto;
 
     // Find the organizer by ID
     const organizer = await this.organizationProfileService.findOne(organizerId);
@@ -25,9 +27,25 @@ export class EventsService {
       throw new NotFoundException(`Organizer with ID ${organizerId} not found`);
     }
 
+    // Create the event
     const event = this.eventRepository.create({ ...eventData, organizer });
+    await this.eventRepository.save(event);
 
-    return this.eventRepository.save(event);
+    // Create and associate hikes
+    if (hikeDtos && hikeDtos.length > 0) {
+      const hikes = await Promise.all(
+        hikeDtos.map(hikeDto => {
+          // Add the eventId to each hike DTO
+          const hikeWithEventId = { ...hikeDto, eventId: event.id };
+          return this.hikesService.create(hikeWithEventId);
+        })
+      );
+
+      event.hikes = hikes; // Associate the hikes with the event
+      await this.eventRepository.save(event); // Save the event with its hikes
+    }
+
+    return this.findOne(event.id); // Fetch the event with relations
   }
 
   async findAll(): Promise<Event[]> {

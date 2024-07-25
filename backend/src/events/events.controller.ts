@@ -21,7 +21,7 @@ export class EventsController {
   @UseGuards(AuthGuard,RolesGuard)
   @Post()
   @Roles(Role.Organizer)
-  create(@Body() createEventDto: CreateEventDto) {
+  async create(@Body() createEventDto: CreateEventDto) {
     return this.eventsService.create(createEventDto);
   }
 
