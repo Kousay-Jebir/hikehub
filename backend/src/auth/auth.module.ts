@@ -19,7 +19,7 @@ import { UserSettingsModule } from 'src/user-settings/user-settings.module';
     JwtModule.register({
       global: true,
       secret: process.env.SECRET || jwtConstants.secret,
-      signOptions: { expiresIn: '1d' },
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   providers: [AuthService],

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Button, Container, TextField, Typography, Grid, IconButton } from "@mui/material";
+import { Box, Button, Container, TextField, Typography, Grid, IconButton, useTheme } from "@mui/material";
 import AuthContext from "../auth/context/AuthContext";
 import MapComponent from "../lib/leaflet/MapComponent";
 import createEvent from "../api/event-management/services/createEvent";
@@ -7,6 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 export default function NewEventForm() {
+  const theme = useTheme();
   const authData = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -20,7 +21,6 @@ export default function NewEventForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Process and clean the hike data
     const processedHikes = hikes.map(hike => ({
       title: hike.title,
       description: hike.description,
@@ -33,7 +33,7 @@ export default function NewEventForm() {
           lng: marker.getLatLng().lng
         }
       })),
-      location: hike.trail ? hike.trail.trailId : null // Use the trail ID if it exists
+      location: hike.trail ? hike.trail.trailId : null
     }));
 
     const eventData = {
@@ -79,18 +79,17 @@ export default function NewEventForm() {
   };
 
   return (
-    <Container maxWidth="lg">
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
-          mt: 4,
           display: "flex",
           flexDirection: "column",
-          gap: 3,
+          gap: theme.spacing(2),
+          p: theme.spacing(1),
         }}
       >
-        <Typography variant="h4" component="h1" align="center" gutterBottom>
+        <Typography variant="h3" align="center" fontWeight={theme.typography.fontWeightBold} color={theme.palette.text.primary}>
           Create New Event
         </Typography>
         <TextField
@@ -100,6 +99,7 @@ export default function NewEventForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          sx={{ mb: theme.spacing(2) }}
         />
         <TextField
           label="Event Description"
@@ -109,6 +109,7 @@ export default function NewEventForm() {
           rows={4}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          sx={{ mb: theme.spacing(2) }}
         />
         <TextField
           label="Start Date & Time"
@@ -119,6 +120,7 @@ export default function NewEventForm() {
           onChange={(e) => setStartDate(e.target.value)}
           InputLabelProps={{ shrink: true }}
           required
+          sx={{ mb: theme.spacing(2) }}
         />
         <TextField
           label="End Date & Time"
@@ -129,6 +131,7 @@ export default function NewEventForm() {
           onChange={(e) => setEndDate(e.target.value)}
           InputLabelProps={{ shrink: true }}
           required
+          sx={{ mb: theme.spacing(2) }}
         />
         <TextField
           label="Location"
@@ -137,10 +140,13 @@ export default function NewEventForm() {
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           required
+          sx={{ mb: theme.spacing(2) }}
         />
-        <Typography variant="h6">Hikes</Typography>
+        <Typography variant="h6" color={theme.palette.text.secondary} sx={{ mb: theme.spacing(2) }}>
+          Hikes
+        </Typography>
         {hikes.map((hike, index) => (
-          <Box key={index} sx={{ mb: 2 }}>
+          <Box key={index} sx={{ mb: theme.spacing(2) }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -150,6 +156,7 @@ export default function NewEventForm() {
                   value={hike.title}
                   onChange={(e) => handleHikeChange(index, "title", e.target.value)}
                   required
+                  sx={{ mb: theme.spacing(2) }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -161,10 +168,11 @@ export default function NewEventForm() {
                   rows={2}
                   value={hike.description}
                   onChange={(e) => handleHikeChange(index, "description", e.target.value)}
+                  sx={{ mb: theme.spacing(2) }}
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
+            <Grid container spacing={2} sx={{ mt: theme.spacing(2) }}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   label="Start Time"
@@ -175,6 +183,7 @@ export default function NewEventForm() {
                   onChange={(e) => handleHikeChange(index, "startTime", e.target.value)}
                   InputLabelProps={{ shrink: true }}
                   required
+                  sx={{ mb: theme.spacing(2) }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -187,10 +196,11 @@ export default function NewEventForm() {
                   onChange={(e) => handleHikeChange(index, "endTime", e.target.value)}
                   InputLabelProps={{ shrink: true }}
                   required
+                  sx={{ mb: theme.spacing(2) }}
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
+            <Grid container spacing={2} sx={{ mt: theme.spacing(2) }}>
               <Grid item xs={12}>
                 <MapComponent
                   handleMarkersChange={(markers) => handleMarkersChange(index, markers)}
@@ -198,7 +208,7 @@ export default function NewEventForm() {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={2} sx={{ mt: 2 }}>
+            <Grid container spacing={2} sx={{ mt: theme.spacing(2) }}>
               <Grid item>
                 <IconButton onClick={addHike} color="primary" aria-label="add hike">
                   <AddCircleIcon />
@@ -218,6 +228,5 @@ export default function NewEventForm() {
           Create Event
         </Button>
       </Box>
-    </Container>
   );
 }
