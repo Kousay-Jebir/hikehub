@@ -14,11 +14,28 @@ export default function NewEventForm() {
   const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
   const [hikes, setHikes] = useState([
-    { title: "", description: "", startTime: "", endTime: "", location: "", markers: [] },
+    { title: "", description: "", startTime: "", endTime: "", markers: [], trail: null },
   ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Process and clean the hike data
+    const processedHikes = hikes.map(hike => ({
+      title: hike.title,
+      description: hike.description,
+      startTime: hike.startTime,
+      endTime: hike.endTime,
+      locations: hike.markers.map(marker => ({
+        label: marker.getPopup().getContent(),
+        coordinates: {
+          lat: marker.getLatLng().lat,
+          lng: marker.getLatLng().lng
+        }
+      })),
+      location: hike.trail ? hike.trail.trailId : null // Use the trail ID if it exists
+    }));
+
     const eventData = {
       organizerId: authData.user.id,
       title,
@@ -26,9 +43,11 @@ export default function NewEventForm() {
       startDate,
       endDate,
       location,
-      hikes,
+      hikes: processedHikes,
     };
-    console.log(authData);
+
+    console.log("Processed Event Data:", eventData);
+    console.log(hikes);
     console.log(await createEvent(authData.user.accessToken, authData.user.userId, eventData));
   };
 
@@ -39,7 +58,7 @@ export default function NewEventForm() {
   };
 
   const addHike = () => {
-    setHikes([...hikes, { title: "", description: "", startTime: "", endTime: "", location: "", markers: [] }]);
+    setHikes([...hikes, { title: "", description: "", startTime: "", endTime: "", markers: [], trail: null }]);
   };
 
   const removeHike = (index) => {
@@ -50,6 +69,12 @@ export default function NewEventForm() {
   const handleMarkersChange = (index, markers) => {
     const updatedHikes = [...hikes];
     updatedHikes[index].markers = markers;
+    setHikes(updatedHikes);
+  };
+
+  const handleTrailChange = (index, trail) => {
+    const updatedHikes = [...hikes];
+    updatedHikes[index].trail = { trailId: trail.properties.trailId };
     setHikes(updatedHikes);
   };
 
@@ -165,37 +190,31 @@ export default function NewEventForm() {
                 />
               </Grid>
             </Grid>
-            <TextField
-              label="Hike Location"
-              variant="outlined"
-              fullWidth
-              value={hike.location}
-              onChange={(e) => handleHikeChange(index, "location", e.target.value)}
-              required
-            />
-            <MapComponent handleMarkersChange={(markers) => handleMarkersChange(index, markers)} />
-            <Box sx={{ mt: 2 }}>
-              {hikes.length > 1 && (
-                <IconButton color="error" onClick={() => removeHike(index)}>
-                  <RemoveCircleIcon />
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item xs={12}>
+                <MapComponent
+                  handleMarkersChange={(markers) => handleMarkersChange(index, markers)}
+                  handleTrailChange={(trail) => handleTrailChange(index, trail)} 
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={2} sx={{ mt: 2 }}>
+              <Grid item>
+                <IconButton onClick={addHike} color="primary" aria-label="add hike">
+                  <AddCircleIcon />
                 </IconButton>
+              </Grid>
+              {hikes.length > 1 && (
+                <Grid item>
+                  <IconButton onClick={() => removeHike(index)} color="secondary" aria-label="remove hike">
+                    <RemoveCircleIcon />
+                  </IconButton>
+                </Grid>
               )}
-            </Box>
+            </Grid>
           </Box>
         ))}
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddCircleIcon />}
-          onClick={addHike}
-        >
-          Add Another Hike
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-        >
+        <Button type="submit" variant="contained" color="primary">
           Create Event
         </Button>
       </Box>

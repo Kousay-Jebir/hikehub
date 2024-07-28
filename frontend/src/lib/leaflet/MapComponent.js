@@ -6,15 +6,13 @@ import TrailSelector from './TrailSelector';
 import MarkerControls from './MarkerControls';
 import trailsData from './data.json'; // Adjust the path according to your file structure
 
-const MapComponent = ({ handleMarkersChange }) => {
-  const mapRef = useRef(null); // Create a ref for the map container
-  const mapInstanceRef = useRef(null); // Ref to store the map instance
-  const [selectedTrail, setSelectedTrail] = useState(null); // State to hold the selected trail
-  const [markers, setMarkers] = useState([]); // State to hold the markers
+const MapComponent = ({ handleMarkersChange, handleTrailChange }) => {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const [selectedTrail, setSelectedTrail] = useState(null);
 
   useEffect(() => {
     if (mapRef.current && !mapInstanceRef.current) {
-      // Initialize the map only if it hasn't been initialized yet
       const mapInstance = L.map(mapRef.current).setView([37.3861, -122.0838], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapInstance);
 
@@ -31,13 +29,12 @@ const MapComponent = ({ handleMarkersChange }) => {
           [bbox.getSouthWest().lat, bbox.getNorthEast().lng]
         ]).addTo(mapInstance);
 
-        mapInstance.fitBounds(poly.getBounds()); // Adjust the map to fit the search results
+        mapInstance.fitBounds(poly.getBounds());
       });
 
       mapInstanceRef.current = mapInstance;
     }
 
-    // Cleanup function to remove the map instance
     return () => {
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
@@ -48,14 +45,12 @@ const MapComponent = ({ handleMarkersChange }) => {
 
   useEffect(() => {
     if (mapInstanceRef.current && selectedTrail) {
-      // Remove existing trails
       mapInstanceRef.current.eachLayer(layer => {
         if (layer instanceof L.GeoJSON) {
           mapInstanceRef.current.removeLayer(layer);
         }
       });
 
-      // Add selected trail
       const geojsonLayer = L.geoJSON(selectedTrail, {
         style: feature => ({
           color: feature.properties.difficulty === 'Hard' ? 'red' : 'green',
@@ -66,9 +61,10 @@ const MapComponent = ({ handleMarkersChange }) => {
         }
       }).addTo(mapInstanceRef.current);
 
-      // Center the map on the trail's bounding box
       const bounds = geojsonLayer.getBounds();
       mapInstanceRef.current.fitBounds(bounds);
+
+      handleTrailChange(selectedTrail); // Pass selected trail to parent component
     }
   }, [selectedTrail]);
 
@@ -77,7 +73,6 @@ const MapComponent = ({ handleMarkersChange }) => {
   };
 
   const handleMarkersUpdate = (updatedMarkers) => {
-    setMarkers(updatedMarkers);
     handleMarkersChange(updatedMarkers);
   };
 
@@ -91,3 +86,4 @@ const MapComponent = ({ handleMarkersChange }) => {
 };
 
 export default MapComponent;
+          

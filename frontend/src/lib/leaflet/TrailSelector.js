@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
+// TrailSelector.js
 const TrailSelector = ({ trails, onSelect }) => {
   const [selectedTrail, setSelectedTrail] = React.useState("");
 
