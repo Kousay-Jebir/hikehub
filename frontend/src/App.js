@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-/* import './App.css'; */
+import './App.css';
 import SignIn from './auth/components/SignIn';
 import SignUp from './auth/components/SignUp';
 import NewEventForm from './event-management/NewEventForm';
@@ -15,21 +15,25 @@ import AuthRequired from './shared/components/AuthRequired';
 import EventCard from './event-management/EventCard';
 import Events from './event-management/Events';
 
+import MapComponent from './lib/leaflet/MapComponent';
 
 function App() {
   const isSignin = true;
   return (
     <div className="App">
       <CssBaseline/>
-      {/* 
-      {
+      
+      {/* {
         isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
       }
       <ProfileSetupStepper/>
       <OrganizationProfileSetup></OrganizationProfileSetup>
 
-      <ProfileSettings></ProfileSettings> */}
-      {/* <ProfileSetupPage></ProfileSetupPage> */}
+      <ProfileSettings></ProfileSettings>
+      <ProfileSetupPage></ProfileSetupPage> */}
+
+
+
       <Routes>
         <Route path='/test' element={<Events></Events>} />
           <Route path='/signin' element={<SignIn></SignIn>}/>
@@ -45,6 +49,10 @@ function App() {
             </Route>
           
         </Routes>
+
+
+{/*   <MapComponent/>
+ */}
     </div>
   );
 }

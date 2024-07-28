@@ -1,12 +1,11 @@
-// create-hike.dto.ts
-import { IsNotEmpty, IsOptional, IsString, IsDate, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsArray, ValidateNested, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreateLocationDto } from 'src/locations/dto/create-location.dto';
 
 export class CreateHikeDto {
-  @IsNotEmpty()
   @IsNumber()
   eventId: number;
 
-  @IsNotEmpty()
   @IsString()
   title: string;
 
@@ -14,15 +13,20 @@ export class CreateHikeDto {
   @IsString()
   description?: string;
 
-  @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   startTime: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   endTime?: Date;
 
   @IsOptional()
   @IsString()
   location?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateLocationDto)
+  locations?: CreateLocationDto[];
 }

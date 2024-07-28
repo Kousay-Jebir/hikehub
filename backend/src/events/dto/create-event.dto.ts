@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString, IsNumber, ValidateNested, IsArray } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsArray, ValidateNested, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateHikeDto } from 'src/hikes/dto/create-hike.dto';
 
@@ -11,11 +11,11 @@ export class CreateEventDto {
   description?: string;
 
   @IsDateString()
-  startDate: string;
+  startDate: Date;
 
   @IsOptional()
   @IsDateString()
-  endDate?: string;
+  endDate?: Date;
 
   @IsOptional()
   @IsString()

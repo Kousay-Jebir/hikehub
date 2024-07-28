@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+ */
+
+
+/* src/index.css or src/App.css */
+@import "~leaflet/dist/leaflet.css";
+

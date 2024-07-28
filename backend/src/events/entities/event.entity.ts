@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Hike } from 'src/hikes/entities/hike.entity';
 import { OrganizationProfile } from 'src/organization-profiles/entities/organization-profile.entity';
 import { Review } from 'src/reviews/entities/review.entity';
 import { Participation } from 'src/participations/entities/participation.entity';
-import { Hike } from 'src/hikes/entities/hike.entity';
+import { ManyToMany } from 'typeorm';
 @Entity()
 export class Event {
   @PrimaryGeneratedColumn()
@@ -44,3 +45,5 @@ export class Event {
   @Column({ default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
 }
+
+
