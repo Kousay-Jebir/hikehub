@@ -6,6 +6,8 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Ownership } from 'src/role/ownership.decorator';
+import { Roles } from 'src/role/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('user-profiles')
 export class UserProfilesController {
@@ -26,11 +28,14 @@ export class UserProfilesController {
     return this.userProfilesService.findOne(+id);
   }
   @ApiBearerAuth()
-  @Ownership()
   @UseGuards(AuthGuard,RolesGuard)
+  @Ownership()
+  @Roles(Role.Hiker)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserProfileDto: UpdateUserProfileDto) {
+    console.log(+id);
     return this.userProfilesService.update(+id, updateUserProfileDto);
+
   }
 
   @Delete(':id')

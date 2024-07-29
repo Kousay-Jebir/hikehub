@@ -1,21 +1,91 @@
 import { useContext, useEffect, useState } from "react";
+import {
+  Avatar,
+  Box,
+  CircularProgress,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import getProfile from "../../api/profile-management/services/getProfile";
 import AuthContext from "../../auth/context/AuthContext";
+import ProfileSettings from "../profile-settings/ProfileSettings";
+import { useNavigate } from "react-router-dom";
 
-export default function UserProfile(){
-    const authData = useContext(AuthContext);
-    const [profile,setPorilfe] = useState({});
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const profile = await getProfile(authData.user.accessToken, authData.user.userId);
-                setPorilfe(profile);
-                console.log(profile)
-            } catch (error) {
-                console.error('Failed to fetch profile:', error);
-            }
-        };
+export default function UserProfile() {
+  const authData = useContext(AuthContext);
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfile(authData.user.accessToken, authData.user.userId);
+        setProfile(profile);
+        setLoading(false);
+        console.log(profile);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+        setLoading(false);
+      }
+    };
 
-        fetchProfile();
-    }, []);
+    fetchProfile();
+  }, [authData.user.accessToken, authData.user.userId]);
+
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  return (
+    <>
+      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+        <Box display="flex" alignItems="center" mb={4}>
+          <Avatar
+            alt={`${profile.firstName} ${profile.lastName}`}
+            src="/static/images/avatar/2.jpg"
+            sx={{ width: 100, height: 100, mr: 2 }}
+          />
+          <Box>
+            <Typography variant="h5">
+              {profile.firstName || "First Name"} {profile.lastName || "Last Name"}
+            </Typography>
+            <Typography variant="body1" color="textSecondary">
+              {profile.bio || "No bio available"}
+            </Typography>
+            <Tooltip title="Edit Profile">
+              <IconButton color="primary" onClick={()=>{navigate("/setup/hiker-profile")}}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">Personal Information</Typography>
+            <Typography variant="body1"><strong>Birthday:</strong> {profile.birthday ? new Date(profile.birthday).toLocaleDateString() : "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Nationality:</strong> {profile.nationality || "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Phone Number:</strong> {profile.phoneNumber || "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Gender:</strong> {profile.genderCode || "Not provided"}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h6">Account Information</Typography>
+            <Typography variant="body1"><strong>Email:</strong> {profile.email || "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Username:</strong> {profile.userName || "Not provided"}</Typography>
+          </Grid>
+        </Grid>
+      </Paper>
+      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+        <ProfileSettings></ProfileSettings>
+      </Paper>
+    </>
+  );
 }

@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Param, Delete, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, BadRequestException, UseInterceptors, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserInfoInterceptor } from 'src/user-info/user-info.interceptor';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -15,6 +18,18 @@ export class UsersController {
       throw new BadRequestException('All fields are required');
     }
     return this.usersService.createUser(userName, email, password, roles);
+  }
+
+  @Get('info/:id')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @UseInterceptors(UserInfoInterceptor)
+  async getInfo(@Param('id') id: number): Promise<User> {
+    const info = await this.usersService.getInfo(id);
+    if (!info) {
+      throw new NotFoundException(`Info with ID ${id} not found`);
+    }
+    return info;
   }
 
   @Get(':id')

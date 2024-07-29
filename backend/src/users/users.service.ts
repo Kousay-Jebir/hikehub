@@ -17,7 +17,7 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { email } });
   }
   async findById(id: number): Promise<User | undefined> {
-    return this.usersRepository.findOne({ where: { id } });
+    return this.usersRepository.findOne({ where: { id }});
   }
 
   async createUser(username: string,email:string, password: string, roles: string): Promise<User> {
@@ -25,6 +25,42 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
+  async getInfo(id: number): Promise<any | undefined> {
+    // Fetch the user with their role
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      select: ['id', 'userName', 'email', 'roles'] // Fetch only necessary fields
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Determine which profile to fetch based on the user's role
+    const profileRelation = user.roles.includes('organizer') ? 'organizationProfile' : 'userProfile';
+
+    // Fetch the user with the appropriate profile relation
+    const userWithProfile = await this.usersRepository.findOne({
+      where: { id },
+      relations: [profileRelation]
+    });
+
+    if (!userWithProfile) {
+      throw new NotFoundException('User with profile not found');
+    }
+
+    // Extract profile information based on the determined profile type
+    const profile = userWithProfile[profileRelation];
+
+    // Construct the response object
+    const info = {
+      userName: userWithProfile.userName,
+      email: userWithProfile.email,
+      ...profile
+    };
+
+    return info;
+  }
   async remove(id: number): Promise<void> {
     const user = await this.usersRepository.findOne({ where: { id } });
     if (!user) {

@@ -34,7 +34,7 @@ export class UserSettingsService {
   }
 
   async findOne(id: number): Promise<UserSetting> {
-    const userSetting = await this.userSettingsRepository.findOneBy({ id });
+    const userSetting = await this.userSettingsRepository.findOneBy({ userProfileId:id });
     if (!userSetting) {
       throw new NotFoundException(`UserSetting #${id} not found`);
     }

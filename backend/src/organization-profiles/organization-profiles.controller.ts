@@ -5,6 +5,9 @@ import { UpdateOrganizationProfileDto } from './dto/update-organization-profile.
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Ownership } from 'src/role/ownership.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { RolesGuard } from 'src/role/roles.guard';
+import { Roles } from 'src/role/roles.decorator';
+import { Role } from 'src/enums/role.enum';
 
 @Controller('organization-profiles')
 export class OrganizationProfilesController {
@@ -30,7 +33,8 @@ export class OrganizationProfilesController {
     return this.organizationProfilesService.findOne(+id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles(Role.Organizer)
   @ApiBearerAuth()
   @Ownership()
   @Patch(':id')

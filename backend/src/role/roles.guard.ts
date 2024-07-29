@@ -6,7 +6,8 @@ import { OWNERSHIP_KEY } from './ownership.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private reflector: Reflector) {
+  }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
@@ -20,6 +21,7 @@ export class RolesGuard implements CanActivate {
     ]);
 
     const request = context.switchToHttp().getRequest();
+    console.log(request);
     const user = request.user;
     const resourceOwnerId = request.params.id; // Adjust based on how you identify the resource owner
 
