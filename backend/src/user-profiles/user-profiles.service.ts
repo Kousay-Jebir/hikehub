@@ -37,7 +37,7 @@ export class UserProfilesService {
   }
 
   async findOne(id: number): Promise<UserProfile> {
-    const userProfile = await this.userProfileRepository.findOneBy({id});
+    const userProfile = await this.userProfileRepository.findOneBy({userId:id});
     if (!userProfile) {
       throw new NotFoundException(`UserProfile #${id} not found`);
     }
@@ -72,5 +72,10 @@ export class UserProfilesService {
     if (!deleteResult.affected) {
       throw new NotFoundException(`UserProfile #${id} not found`);
     }
+  }
+
+  async findHikerProfileByUserId(id:number): Promise<number> {
+    const profileId = (await this.userProfileRepository.findOneBy({userId:id})).id;
+    return profileId
   }
 }

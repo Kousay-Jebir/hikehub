@@ -18,6 +18,7 @@ import {ThemeProvider} from '@mui/material';
 import MapComponent from './lib/leaflet/MapComponent';
 import { createTheme } from '@mui/material/styles';
 import AuthProvider from './auth/context/AuthProvider';
+import UserProfile from './profile-management/profile/UserProfile';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -59,7 +60,7 @@ function App() {
                     <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
                   </Route>
                   <Route path='/hiker' >
-                    <Route path='account' element={<AuthRequired><ProfileSettings></ProfileSettings></AuthRequired>}></Route>
+                    <Route path='account' element={<AuthRequired><UserProfile></UserProfile></AuthRequired>}></Route>
         
                   </Route>
                   <Route path='/events'>
