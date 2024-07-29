@@ -1,14 +1,17 @@
 import React from 'react';
 import { Box, Grid, TextField, Typography } from '@mui/material';
+import { useTheme } from '@emotion/react';
 
-const ProfileSetupAboutYou = ({ formData, handleChange }) => (
+const ProfileSetupAboutYou = ({ formData, handleChange }) => {
+  const theme = useTheme()
+  return(
   <Box sx={{ mt: 2 }}>
-    <Typography variant="h3" gutterBottom fontWeight={'bold'}>
+    <Typography variant="h3" gutterBottom fontWeight={'bold'} color={"text.primary"}>
       Tell us about yourself!
     </Typography>
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom color="text.secondary">
           What should we call you?
         </Typography>
       </Grid>
@@ -33,7 +36,7 @@ const ProfileSetupAboutYou = ({ formData, handleChange }) => (
         />
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h5" gutterBottom color="text.secondary">
           More about yourself...
         </Typography>
       </Grid>
@@ -51,6 +54,7 @@ const ProfileSetupAboutYou = ({ formData, handleChange }) => (
       </Grid>
     </Grid>
   </Box>
-);
+  );
+};
 
 export default ProfileSetupAboutYou;

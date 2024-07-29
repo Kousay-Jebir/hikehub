@@ -117,7 +117,7 @@ const OrganizationProfileSetup = () => {
                 variant="outlined"
                 sx={{ mb: 2 }}
             />
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h5" gutterBottom color="text.secondary">
                 Contact Information
             </Typography>
             <TextField

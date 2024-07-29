@@ -2,8 +2,11 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import Navbar from '../navbar/Navbar';
 import { Outlet } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
 
 const GlobalLayout = ({children}) => {
+    const theme=useTheme()
+    console.log(theme)
     return (
         <Grid container direction="column">
             {/* Navbar component */}

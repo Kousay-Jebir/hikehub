@@ -58,6 +58,10 @@ function App() {
                     <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
                     <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
                   </Route>
+                  <Route path='/hiker' >
+                    <Route path='account' element={<AuthRequired><ProfileSettings></ProfileSettings></AuthRequired>}></Route>
+        
+                  </Route>
                   <Route path='/events'>
                       <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
                       <Route path='test' element={<AuthRequired><Events></Events></AuthRequired>} />
