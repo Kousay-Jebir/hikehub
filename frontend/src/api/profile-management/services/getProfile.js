@@ -1,12 +1,13 @@
 
 import axios from "axios";
 import {ORGANIZATION_PROFILE, USER_PROFILE } from "../routes";
+import { USER_INFO } from "../../account-management/routes";
 
 
 export default async function getProfile(accessToken,userId,isOrganization=false){
     const URL = isOrganization ?   ORGANIZATION_PROFILE : USER_PROFILE
     try {
-      const response = await axios.get(URL + userId,
+      const response = await axios.get(USER_INFO + userId,
         {
             headers: {
               'Authorization': `Bearer ${accessToken}`,
