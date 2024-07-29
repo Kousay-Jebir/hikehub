@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   AppBar,
   Box,
@@ -16,16 +16,16 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import AuthContext from '../../auth/context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const authData = React.useContext(AuthContext);
-  const { isLoggedIn } = authData;
-  const pages = isLoggedIn ? ['Feed', 'Recommendations'] : ['Login', 'Signup'];
-  const settings = ['Profile', 'Account', 'Logout'];
+  const authData = useContext(AuthContext);
+  const { isLoggedIn, user } = authData;
   const navigate = useNavigate();
+  const settings = ['Profile', 'Account', 'Logout'];
+  const pages = isLoggedIn ? ['Feed', 'Recommendations'] : ['Login', 'Signup'];
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,8 +39,21 @@ export default function Navbar() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
+
+    if (setting === 'Profile') {
+      if (user.roles.includes('organizer')) {
+        navigate('/setup/organization-profile');
+      } else if (user.roles.includes('hiker')) {
+        navigate('/setup/hiker-profile');
+      }
+    } else if (setting === 'Account') {
+      console.log('Account');
+    } else if (setting === 'Logout') {
+      console.log('Logout');
+      // You can also add logout logic here, for example, calling a logout function from your AuthContext
+    }
   };
 
   return (
@@ -78,31 +91,36 @@ export default function Navbar() {
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              {/* pages.map((page) => (
-                <Button key={page} sx={{ mx: 1, color: 'inherit' }}>
-                  {page}
-                </Button>
-              )) */
-      
-              !isLoggedIn ? <><Button onClick={()=>{navigate('/signin')}} sx={{ mx: 1, color: 'inherit' }}>LOGIN</Button> <Button onClick={()=>{navigate('/signup')}} sx={{ mx: 1, color: 'inherit' }}>SIGNUP</Button></>:
-              <>{authData.user.roles.includes("organizer") ? 
-                <Button onClick={()=>{navigate('/events/new')}} sx={{ mx: 1, color: 'red' }}>POST EVENT</Button>
-                :<Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>FEED</Button>} <Button onClick={()=>{navigate('/')}} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button></>
-              
-              }
+              {!isLoggedIn ? (
+                <>
+                  <Button onClick={() => { navigate('/signin'); }} sx={{ mx: 1, color: 'inherit' }}>LOGIN</Button>
+                  <Button onClick={() => { navigate('/signup'); }} sx={{ mx: 1, color: 'inherit' }}>SIGNUP</Button>
+                </>
+              ) : (
+                <>
+                  {user.roles.includes("organizer") ? (
+                    <Button onClick={() => { navigate('/events/new'); }} sx={{ mx: 1, color: 'red' }}>POST EVENT</Button>
+                  ) : (
+                    <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>FEED</Button>
+                  )}
+                  <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button>
+                </>
+              )}
             </Box>
 
-            {authData.isLoggedIn ? <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenUserMenu}
-              color="inherit"
-              sx={{ ml: 1 }}
-            >
-              <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
-            </IconButton> : null }
+            {isLoggedIn && (
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenUserMenu}
+                color="inherit"
+                sx={{ ml: 1 }}
+              >
+                <Avatar alt="User Avatar" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            )}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -116,10 +134,10 @@ export default function Navbar() {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={() => handleCloseUserMenu(null)}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                   {setting}
                 </MenuItem>
               ))}

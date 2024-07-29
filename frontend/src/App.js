@@ -17,64 +17,60 @@ import Events from './event-management/Events';
 import {ThemeProvider} from '@mui/material';
 import MapComponent from './lib/leaflet/MapComponent';
 import { createTheme } from '@mui/material/styles';
+import AuthProvider from './auth/context/AuthProvider';
 function App() {
   const isSignin = true;
   const theme = createTheme({
-      palette: {
-        primary: {
-          main: '#2E8B57', // Forest Green
-        },
-        secondary: {
-          main: '#8B4513', // Earth Brown
-        },
-        background: {
-          default: '#F5F5DC', // Pale Beige
-          paper: '#D3D3D3', // Light Grey
-        },
-        text: {
-          primary: '#333333', // Charcoal Grey
-          secondary: '#556B2F', // Dark Olive
-        },
-        action: {
-          active: '#87CEEB', // Sky Blue
-          hover: '#FF4500', // Sunset Orange
-        },
-        divider: '#A9A9A9', // Mountain Grey
+    palette: {
+      primary: {
+        main: '#388E3C', // Forest green
       },
-    });
+      secondary: {
+        main: '#75A9D9', // Soft sky blue
+      },
+      error: {
+        main: '#D84315', // Burnt orange
+      },
+      warning: {
+        main: '#795548', // Deep brown
+      },
+    },
+  });
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <CssBaseline/>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <CssBaseline/>
       
-        {/* {
-          isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
-        }
-        <ProfileSetupStepper/>
-        <OrganizationProfileSetup></OrganizationProfileSetup>
-        <ProfileSettings></ProfileSettings>
-        <ProfileSetupPage></ProfileSetupPage> */}
-        <Routes>
-            <Route path='/signin' element={<SignIn></SignIn>}/>
-            <Route path='/signup' element={<SignUp></SignUp>}/>
+          {/* {
+            isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
+          }
+          <ProfileSetupStepper/>
+          <OrganizationProfileSetup></OrganizationProfileSetup>
+          <ProfileSettings></ProfileSettings>
+          <ProfileSetupPage></ProfileSetupPage> */}
+          <Routes>
+              <Route path='/signin' element={<SignIn></SignIn>}/>
+              <Route path='/signup' element={<SignUp></SignUp>}/>
       
-              <Route element={<GlobalLayout></GlobalLayout>}>
-                <Route path='/setup' >
-                  <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
-                  <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
+                <Route element={<GlobalLayout></GlobalLayout>}>
+                  <Route path='/setup' >
+                    <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
+                    <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
+                  </Route>
+                  <Route path='/events'>
+                      <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
+                      <Route path='test' element={<AuthRequired><Events></Events></AuthRequired>} />
+                  </Route>
                 </Route>
-                <Route path='/events'>
-                    <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
-                    <Route path='test' element={<Events></Events>} />
-                </Route>
-              </Route>
-          </Routes>
+            </Routes>
       
       
-      {/*   <MapComponent/>
-       */}
-      </div>
-    </ThemeProvider>
+        {/*   <MapComponent/>
+         */}
+        </div>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

@@ -88,4 +88,8 @@ export class EventsService {
       throw new NotFoundException(`Event with ID ${id} not found`);
     }
   }
+
+  async findAllByOrganizer(organizerId: number): Promise<Event[]> {
+    return this.eventRepository.find({ where: { organizerId } ,relations:['hikes','hikes.locations']});
+  }
 }

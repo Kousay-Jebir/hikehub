@@ -1,18 +1,23 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   Post,
-  Request,
+  Req,
+  Res,
+  UnauthorizedException,
   UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { RoleBasedProfileInterceptor } from 'src/common/interceptors/role-based-profile.interceptor';
-
+import { Request } from 'express';
+import { Response } from 'express';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -30,9 +35,4 @@ export class AuthController {
     return this.authService.signUp(signUpDto.userName,signUpDto.email, signUpDto.password, signUpDto.roles);
   }
 
-  @UseGuards(AuthGuard)
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
-  }
 }

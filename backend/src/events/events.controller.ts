@@ -19,9 +19,11 @@ export class EventsController {
     return this.eventsService.create(createEventDto);
   }
 
-  @Get()
-  async findAll(): Promise<Event[]> {
-    return this.eventsService.findAll();
+
+
+  @Get('organizer/:id')
+  async findAllByOrganizer(@Param('id') id: string): Promise<Event[]> {
+    return this.eventsService.findAllByOrganizer(+id);
   }
 
   @Get(':id')

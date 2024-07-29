@@ -12,6 +12,7 @@ export default function Events() {
             try {
                 const events = await getOrganizatorEvents(authData.user.accessToken, authData.user.userId);
                 setEvents(events);
+                console.log(events)
             } catch (error) {
                 console.error('Failed to fetch events:', error);
             }
