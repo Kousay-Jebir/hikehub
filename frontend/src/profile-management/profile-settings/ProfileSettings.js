@@ -42,13 +42,13 @@ export default function ProfileSettings() {
                 onSettingChange={handleSettingChange}
             />
             <Setting
-                settingTitle="Public birthday"
+                settingTitle="Private birthday"
                 settingKey="birthdayPrivacy"
                 settingValue={settings.birthdayPrivacy}
                 onSettingChange={handleSettingChange}
             />
             <Setting
-                settingTitle="Public phone number"
+                settingTitle="Private phone number"
                 settingKey="phoneNumberPrivacy"
                 settingValue={settings.phoneNumberPrivacy}
                 onSettingChange={handleSettingChange}

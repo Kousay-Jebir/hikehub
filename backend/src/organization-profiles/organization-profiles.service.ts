@@ -67,8 +67,7 @@ export class OrganizationProfilesService {
   }
 
   async findOrganizationProfileByUserId(id:number): Promise<number> {
-    const profileId = (await this.organizationProfileRepository.findOneBy({userId:id})).id;
-    console.log(profileId);
-    return profileId
+    const profile = (await this.organizationProfileRepository.findOneBy({userId:id}));
+    return profile.id
   }
 }
