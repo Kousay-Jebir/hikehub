@@ -37,7 +37,7 @@ export class UserProfilesService {
   }
 
   async findOne(id: number): Promise<UserProfile> {
-    const userProfile = await this.userProfileRepository.findOneBy({userId:id});
+    const userProfile = await this.userProfileRepository.findOneBy({id});
     if (!userProfile) {
       throw new NotFoundException(`UserProfile #${id} not found`);
     }

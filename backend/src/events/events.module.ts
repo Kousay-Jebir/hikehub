@@ -9,5 +9,6 @@ import { HikesModule } from 'src/hikes/hikes.module';
   imports: [TypeOrmModule.forFeature([Event]),OrganizationProfilesModule,HikesModule],
   controllers: [EventsController],
   providers: [EventsService],
+  exports:[EventsService]
 })
 export class EventsModule {}
