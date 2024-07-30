@@ -15,6 +15,7 @@ import getProfile from "../../api/profile-management/services/getProfile";
 import AuthContext from "../../auth/context/AuthContext";
 import ProfileSettings from "../profile-settings/ProfileSettings";
 import { useNavigate } from "react-router-dom";
+import Events from "../../event-management/Events";
 
 export default function OrganizationProfile() {
   const authData = useContext(AuthContext);
@@ -83,9 +84,9 @@ export default function OrganizationProfile() {
           </Grid>
         </Grid>
       </Paper>
-     {/*  <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
-        <ProfileSettings></ProfileSettings>
-      </Paper> */}
+      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+        <Events></Events>
+      </Paper>
     </>
   );
 }
