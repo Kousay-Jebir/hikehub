@@ -83,9 +83,9 @@ export default function OrganizationProfile() {
           </Grid>
         </Grid>
       </Paper>
-      <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
+     {/*  <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
         <ProfileSettings></ProfileSettings>
-      </Paper>
+      </Paper> */}
     </>
   );
 }
