@@ -4,9 +4,13 @@ import { Box, Button } from '@mui/material';
 import Setting from './Setting';
 import editProfileSettings from '../../api/profile-management/services/editProfileSettings';
 import AuthContext from '../../auth/context/AuthContext';
+import { useNotificationError } from '../../shared/context/NotificationContext';
+import { useNotificationSuccess } from '../../shared/context/NotificationContext';
 
 export default function ProfileSettings() {
     const authData = useContext(AuthContext)
+    const showSuccess = useNotificationSuccess();
+    const showError = useNotificationError();
     const [settings, setSettings] = useState({
         isAcceptingFriendRequests: true,
         isEmailExposed: true,
@@ -22,9 +26,14 @@ export default function ProfileSettings() {
     };
 
     const handleSubmit = async () => {
+        try{
         // You can add logic here to submit settings to your backend or perform other actions
         const changes = await editProfileSettings(authData.user.accessToken,authData.user.userId,settings);
-        console.log(changes);
+        showSuccess("Success, changes are saved")  
+        }
+        catch(error) {
+            showError("Error saving changes")
+        }
     };
 
     return (

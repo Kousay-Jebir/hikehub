@@ -18,6 +18,7 @@ import {ThemeProvider} from '@mui/material';
 import MapComponent from './lib/leaflet/MapComponent';
 import { createTheme } from '@mui/material/styles';
 import AuthProvider from './auth/context/AuthProvider';
+import { NotificationProvider } from './shared/context/NotificationContext';
 import UserProfile from './profile-management/profile/UserProfile';
 import OrganizationProfile from './profile-management/profile/OrganizationProfile';
 function App() {
@@ -39,46 +40,48 @@ function App() {
     },
   });
   return (
-    <AuthProvider>
-      <ThemeProvider theme={theme}>
-        <div className="App">
-          <CssBaseline/>
+    <NotificationProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <div className="App">
+            <CssBaseline/>
       
-          {/* {
-            isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
-          }
-          <ProfileSetupStepper/>
-          <OrganizationProfileSetup></OrganizationProfileSetup>
-          <ProfileSettings></ProfileSettings>
-          <ProfileSetupPage></ProfileSetupPage> */}
-          <Routes>
-              <Route path='/signin' element={<SignIn></SignIn>}/>
-              <Route path='/signup' element={<SignUp></SignUp>}/>
+            {/* {
+              isSignin ? <SignIn></SignIn> : <SignUp></SignUp>
+            }
+            <ProfileSetupStepper/>
+            <OrganizationProfileSetup></OrganizationProfileSetup>
+            <ProfileSettings></ProfileSettings>
+            <ProfileSetupPage></ProfileSetupPage> */}
+            <Routes>
+                <Route path='/signin' element={<SignIn></SignIn>}/>
+                <Route path='/signup' element={<SignUp></SignUp>}/>
       
-                <Route element={<GlobalLayout></GlobalLayout>}>
-                  <Route path='/setup' >
-                    <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
-                    <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
+                  <Route element={<GlobalLayout></GlobalLayout>}>
+                    <Route path='/setup' >
+                      <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
+                      <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
+                    </Route>
+                    <Route path='/hiker' >
+                      <Route path='account' element={<AuthRequired><UserProfile></UserProfile></AuthRequired>}></Route>
+                    </Route>
+                    <Route path='/organizer'>
+                      <Route path='account' element={<AuthRequired><OrganizationProfile></OrganizationProfile></AuthRequired>}></Route>
+                    </Route>
+                    <Route path='/events'>
+                        <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
+                        <Route path='test' element={<AuthRequired><Events></Events></AuthRequired>} />
+                    </Route>
                   </Route>
-                  <Route path='/hiker' >
-                    <Route path='account' element={<AuthRequired><UserProfile></UserProfile></AuthRequired>}></Route>
-                  </Route>
-                  <Route path='/organizer'>
-                    <Route path='account' element={<AuthRequired><OrganizationProfile></OrganizationProfile></AuthRequired>}></Route>
-                  </Route>
-                  <Route path='/events'>
-                      <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
-                      <Route path='test' element={<AuthRequired><Events></Events></AuthRequired>} />
-                  </Route>
-                </Route>
-            </Routes>
+              </Routes>
       
       
-        {/*   <MapComponent/>
-         */}
-        </div>
-      </ThemeProvider>
-    </AuthProvider>
+          {/*   <MapComponent/>
+           */}
+          </div>
+        </ThemeProvider>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 
