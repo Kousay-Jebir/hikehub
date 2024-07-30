@@ -7,6 +7,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/role/roles.guard';
 import { Roles } from 'src/role/roles.decorator';
 import { Role } from 'src/enums/role.enum';
+import { Participation } from 'src/participations/entities/participation.entity';
 
 @Controller('events')
 export class EventsController {
@@ -47,5 +48,10 @@ export class EventsController {
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<void> {
     await this.eventsService.remove(id);
+  }
+
+  @Get('participations/:id')
+  async getEventParticipations(@Param('id') id: number): Promise<Participation[]> {
+    return this.eventsService.getParticipations(id);
   }
 }

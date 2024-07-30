@@ -6,6 +6,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 import { HikesService } from 'src/hikes/hikes.service';
 import { OrganizationProfilesService } from 'src/organization-profiles/organization-profiles.service';
+import { Participation } from 'src/participations/entities/participation.entity';
 
 @Injectable()
 export class EventsService {
@@ -91,5 +92,18 @@ export class EventsService {
 
   async findAllByOrganizer(organizerId: number): Promise<Event[]> {
     return this.eventRepository.find({ where: { organizerId } ,relations:['hikes','hikes.locations']});
+  }
+
+  async getParticipations(eventId: number): Promise<Participation[]> {
+    const event = await this.eventRepository.findOne({
+      where: { id: eventId },
+      relations: ['participants'],
+    });
+
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+
+    return event.participants;
   }
 }
