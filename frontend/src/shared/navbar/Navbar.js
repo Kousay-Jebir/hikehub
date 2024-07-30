@@ -55,6 +55,7 @@ export default function Navbar() {
           navigate('/hiker/account');
         }
     } else if (setting === 'Logout') {
+      authData.logout()
       console.log('Logout');
       // You can also add logout logic here, for example, calling a logout function from your AuthContext
     }
