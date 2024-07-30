@@ -73,8 +73,8 @@ export default function OrganizationProfile() {
             <Typography variant="h6">Contact and social Information</Typography>
             <Typography variant="body1"><strong>Phone number:</strong> {profile.contact.phone || "Not provided"}</Typography>
             <Typography variant="body1"><strong>Email:</strong> {profile.contact.email || "Not provided"}</Typography>
-            <Typography variant="body1"><strong>Facebook:</strong> {profile.social.facebook || "Not provided"}</Typography>
-            <Typography variant="body1"><strong>Instagram:</strong> {profile.social.instagram || "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Facebook:</strong> {profile.social?.facebook || "Not provided"}</Typography>
+            <Typography variant="body1"><strong>Instagram:</strong> {profile.social?.instagram || "Not provided"}</Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography variant="h6">Account Information</Typography>

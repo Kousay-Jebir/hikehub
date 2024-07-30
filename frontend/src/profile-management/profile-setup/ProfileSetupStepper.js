@@ -5,10 +5,13 @@ import ProfileSetupAdditionalInfo from './ProfileSetupAdditionalInfo';
 import AuthContext from '../../auth/context/AuthContext';
 import editProfile from '../../api/profile-management/services/editProfile';
 import { Link } from 'react-router-dom';
-
+import { useNotificationError } from '../../shared/context/NotificationContext';
+import { useNotificationSuccess } from '../../shared/context/NotificationContext';
 const steps = ['About You', 'Additional Information'];
 
 const ProfileSetupStepper = () => {
+  const showSuccess = useNotificationSuccess();
+  const showError = useNotificationError()
   const authData = useContext(AuthContext);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -63,9 +66,11 @@ const ProfileSetupStepper = () => {
       console.log('Form Data:', normalizedFormData);
       console.log(authData);
       await editProfile(authData.user.accessToken, authData.user.userId, normalizedFormData);
+      showSuccess("Profile edited successfully")
       // Optionally handle success (e.g., show success message, redirect)
     } catch (error) {
       console.error('Error editing profile:', error);
+      showError("error updating the profile")
       // Handle error (e.g., show error message)
     }
   };

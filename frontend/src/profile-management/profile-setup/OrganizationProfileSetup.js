@@ -5,8 +5,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../../auth/context/AuthContext';
 import editProfile from '../../api/profile-management/services/editProfile';
 import { Link } from 'react-router-dom';
-
+import { useNotificationError } from '../../shared/context/NotificationContext';
+import { useNotificationSuccess } from '../../shared/context/NotificationContext';
 const OrganizationProfileSetup = () => {
+    const showSuccess = useNotificationSuccess();
+    const showError = useNotificationError()
     const authData = useContext(AuthContext)
     const [formData, setFormData] = useState({
         description: '',
@@ -93,9 +96,11 @@ const OrganizationProfileSetup = () => {
             console.log('Form Data:', normalizedFormData);
             console.log(authData);
             await editProfile(authData.user.accessToken, authData.user.userId, normalizedFormData,true);
+            showSuccess("Profile edited successfully")
             // Optionally handle success (e.g., show success message, redirect)
           } catch (error) {
             console.error('Error editing profile:', error);
+            showError("Error editing profile")
             // Handle error (e.g., show error message)
           }
 

@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import signUp from '../../api/auth/services/signup';
-
+import { useTheme } from '@emotion/react';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -28,11 +28,9 @@ function Copyright(props) {
   );
 }
 
-const defaultTheme = createTheme();
-
 export default function SignUp() {
   const [role, setRole] = React.useState('');
-
+  const theme = useTheme();
   const handleRoleChange = (event) => {
     setRole(event.target.value);
   };
@@ -50,7 +48,6 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -142,6 +139,5 @@ export default function SignUp() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
   );
 }

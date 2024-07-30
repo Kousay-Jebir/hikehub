@@ -16,6 +16,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import signIn from '../../api/auth/services/signin';
 import AuthContext from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
+import { useNotificationSuccess } from '../../shared/context/NotificationContext';
+import { useNotificationError } from '../../shared/context/NotificationContext';
 
 function Copyright(props) {
   return (
@@ -36,16 +39,24 @@ const defaultTheme = createTheme();
 
 
 export default function SignIn() {
+  const theme = useTheme();
+  const showSuccess = useNotificationSuccess();
+  const showError = useNotificationError()
   const navigate = useNavigate();
   const authData = React.useContext(AuthContext);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    authData.login(data.get('email'),data.get('password'));
+  
+    try {
+      await authData.login(data.get('email'), data.get('password')); // Await the login function
+      showSuccess("Successfully logged in");
+    } catch (error) {
+      showError("Error during login"); // Ensure this is shown on error
+    }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -112,6 +123,5 @@ export default function SignIn() {
         <Copyright sx={{ mt: 8, mb: 4 }} />
         <RouterLink to={"/events/test"}>hi</RouterLink>
       </Container>
-    </ThemeProvider>
   );
 }
