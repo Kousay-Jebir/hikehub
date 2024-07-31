@@ -51,6 +51,7 @@ export default function SignIn() {
     try {
       await authData.login(data.get('email'), data.get('password')); // Await the login function
       showSuccess("Successfully logged in");
+      navigate("/setup")
     } catch (error) {
       showError("Error during login"); // Ensure this is shown on error
     }
