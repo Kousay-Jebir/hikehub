@@ -36,12 +36,18 @@ export class UserProfilesService {
     return this.userProfileRepository.find();
   }
 
-  async findOne(id: number): Promise<UserProfile> {
-    const userProfile = await this.userProfileRepository.findOneBy({id});
+  async findOne(id: number): Promise<any> {
+    const userProfile = await this.userProfileRepository.findOne({
+      where: { id },
+      relations: ['user'], // This assumes there is a relation set up between UserProfile and User
+    });
+
     if (!userProfile) {
       throw new NotFoundException(`UserProfile #${id} not found`);
     }
-    return userProfile;
+
+    const userName = userProfile.user.userName; // Adjust the field name according to your User entity
+    return { ...userProfile, userName };
   }
   async findUserProfileByUserId(id:number): Promise<number> {
     const profileId = (await this.userProfileRepository.findOneBy({userId:id})).id;
