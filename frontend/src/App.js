@@ -21,21 +21,30 @@ import AuthProvider from './auth/context/AuthProvider';
 import { NotificationProvider } from './shared/context/NotificationContext';
 import UserProfile from './profile-management/profile/UserProfile';
 import OrganizationProfile from './profile-management/profile/OrganizationProfile';
+import { green,grey,brown } from '@mui/material/colors';
 function App() {
   const isSignin = true;
   const theme = createTheme({
     palette: {
       primary: {
-        main: '#388E3C', // Forest green
+        main: green[500],
+        light: green[300],
+        dark: green[700],
+        contrastText: '#fff',
       },
       secondary: {
-        main: '#75A9D9', // Soft sky blue
+        main: brown[500],
+        light: brown[300],
+        dark: brown[700],
+        contrastText: '#fff',
       },
-      error: {
-        main: '#D84315', // Burnt orange
+      background: {
+        default: grey[100],
+        paper: grey[50],
       },
-      warning: {
-        main: '#795548', // Deep brown
+      text: {
+        primary: grey[900],
+        secondary: grey[800],
       },
     },
   });
