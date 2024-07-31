@@ -1,13 +1,12 @@
-import { IsBoolean, IsInt, IsOptional } from 'class-validator';
+// src/participations/dto/create-participation.dto.ts
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class CreateParticipationDto {
   @IsInt()
+  @IsNotEmpty()
   eventId: number;
 
   @IsInt()
-  userId: number;
-
-  @IsOptional()
-  @IsBoolean()
-  didAttend?: boolean;
+  @IsNotEmpty()
+  userProfileId: number;
 }

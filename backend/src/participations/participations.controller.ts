@@ -9,7 +9,7 @@ export class ParticipationsController {
 
   @Post()
   create(@Body() createParticipationDto: CreateParticipationDto) {
-    return this.participationsService.create(createParticipationDto);
+    return this.participationsService.createParticipation(createParticipationDto);
   }
 
   @Get()
@@ -17,18 +17,28 @@ export class ParticipationsController {
     return this.participationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.participationsService.findOne(+id);
+  @Get(':eventId/:userProfileId')
+  async findOne(
+    @Param('eventId') eventId: number,
+    @Param('userProfileId') userProfileId: number
+  ) {
+    return this.participationsService.findOne(eventId, userProfileId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateParticipationDto: UpdateParticipationDto) {
-    return this.participationsService.update(+id, updateParticipationDto);
+  @Patch(':eventId/:userProfileId')
+  async updateParticipation(
+    @Param('eventId') eventId: number,
+    @Param('userProfileId') userProfileId: number,
+    @Body() updateParticipationDto: UpdateParticipationDto
+  ) {
+    return this.participationsService.updateParticipation(eventId, userProfileId, updateParticipationDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.participationsService.remove(+id);
+  @Delete(':eventId/:userProfileId')
+  async removeParticipation(
+    @Param('eventId') eventId: number,
+    @Param('userProfileId') userProfileId: number
+  ) {
+    return this.participationsService.removeParticipation(eventId, userProfileId);
   }
 }
