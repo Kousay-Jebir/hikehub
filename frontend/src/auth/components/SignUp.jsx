@@ -15,6 +15,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import signUp from '../../api/auth/services/signup';
 import { useTheme } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
+import { useNotificationError } from '../../shared/context/NotificationContext';
+import { useNotificationSuccess } from '../../shared/context/NotificationContext';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -31,6 +34,9 @@ function Copyright(props) {
 export default function SignUp() {
   const [role, setRole] = React.useState('');
   const theme = useTheme();
+  const navigate = useNavigate();
+  const showSuccess = useNotificationSuccess();
+  const showError = useNotificationError();
   const handleRoleChange = (event) => {
     setRole(event.target.value);
   };
@@ -44,7 +50,13 @@ export default function SignUp() {
       password: data.get('password'),
       role,
     });
+    try{
     const result = await signUp(data.get('userName'), data.get('email'), data.get('password'), role.toLowerCase());
+    showSuccess("Account has been created successfully");
+    }
+    catch(error){
+      showError(error.response.data.message);
+    }
   };
 
   return (
