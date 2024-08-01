@@ -80,8 +80,11 @@ export class UserProfilesService {
     }
   }
 
-  async findHikerProfileByUserId(id:number): Promise<number> {
-    const profileId = (await this.userProfileRepository.findOneBy({userId:id})).id;
-    return profileId
-  }
+  async getUserNameByUserProfileId(id: number): Promise<string | null> {
+    const profile =  await this.userProfileRepository.findOne({where:{id},relations:['user']})
+    return profile.user.userName
+}
+
+
+
 }

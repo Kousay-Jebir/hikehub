@@ -1,17 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne ,Unique} from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne } from 'typeorm';
 import { Event } from 'src/events/entities/event.entity';
 import { UserProfile } from 'src/user-profiles/entities/user-profile.entity';
 
 @Entity()
 export class Review {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
+  @PrimaryColumn()
   eventId: number;
 
-  @Column()
-  userId: number;
+  @PrimaryColumn()
+  userProfileId: number;
 
   @Column('text')
   comment: string;
@@ -21,9 +18,6 @@ export class Review {
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
-
-  @Column({ default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
 
   @Column({ nullable: true })
   commentEditedAt: Date;
