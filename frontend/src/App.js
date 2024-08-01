@@ -22,6 +22,7 @@ import { NotificationProvider } from './shared/context/NotificationContext';
 import UserProfile from './profile-management/profile/UserProfile';
 import OrganizationProfile from './profile-management/profile/OrganizationProfile';
 import { green,grey,brown } from '@mui/material/colors';
+import EventReview from './review-management/EventReview';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -63,6 +64,7 @@ function App() {
             <ProfileSettings></ProfileSettings>
             <ProfileSetupPage></ProfileSetupPage> */}
             <Routes>
+                <Route path='/' element={<EventReview></EventReview>}/>
                 <Route path='/signin' element={<SignIn></SignIn>}/>
                 <Route path='/signup' element={<SignUp></SignUp>}/>
       
