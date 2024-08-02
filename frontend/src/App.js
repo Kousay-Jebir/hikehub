@@ -65,7 +65,7 @@ function App() {
             <ProfileSettings></ProfileSettings>
             <ProfileSetupPage></ProfileSetupPage> */}
             <Routes>
-                <Route path='/' element={<Reviews eventId={16}></Reviews>}/>
+                {/* <Route path='/' element={<Reviews eventId={16}></Reviews>}/> */}
                 <Route path='/signin' element={<SignIn></SignIn>}/>
                 <Route path='/signup' element={<SignUp></SignUp>}/>
       

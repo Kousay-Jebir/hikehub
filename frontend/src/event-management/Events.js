@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import getOrganizatorEvents from "../api/event-management/services/getOrganizatorEvents";
 import AuthContext from "../auth/context/AuthContext";
 import EventCard from "./EventCard";
+import Reviews from "../review-management/Reviews";
 
 export default function Events() {
     const [events, setEvents] = useState([]);
@@ -24,7 +25,7 @@ export default function Events() {
     return (
         <div>
             {events.map((event, index) => (
-                <EventCard event={event} key={index} />
+                    <EventCard event={event} key={index} />
             ))}
         </div>
     );

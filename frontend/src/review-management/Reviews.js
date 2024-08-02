@@ -5,7 +5,7 @@ import getEventReviews from "../api/review-management/services/getEventReviews.j
 import EventReview from "./EventReview";
 
 export default function Reviews({eventId}) {
-    const authData = {user:{accessToken:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBsZWFzZSIsInN1YiI6Nywicm9sZXMiOlsiaGlrZXIiXSwiaWF0IjoxNzIyNTE0ODgwLCJleHAiOjE3MjI1MTg0ODB9.MWFxeux8EJUU4lGVH6HsyZg8CP8ngASDmC_EHK05Ugo'}}
+    const authData = useContext(AuthContext)
     const [reviews,setReviews] = useState([]);
     useEffect(() => {
         const fetchReviews = async () => {
@@ -18,10 +18,10 @@ export default function Reviews({eventId}) {
         };
 
         fetchReviews();
-    }, [eventId]); // Add eventId to the dependency array
+    }, [authData.user.accessToken,eventId]); // Add eventId to the dependency array
 
     return (
-        <Box>
+        <Box display={'flex'} flexDirection={'column'} gap={4}>
             {reviews.length > 0 ? (
                 reviews.map((review, index) => (
                     <EventReview key={index} review={review} />
