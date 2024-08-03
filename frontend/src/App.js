@@ -22,11 +22,9 @@ import { NotificationProvider } from './shared/context/NotificationContext';
 import UserProfile from './profile-management/profile/UserProfile';
 import OrganizationProfile from './profile-management/profile/OrganizationProfile';
 import { green,grey,brown } from '@mui/material/colors';
-import EventReview from './review-management/EventReview';
-import Reviews from './review-management/Reviews';
-import HikerProfileRenderer from './profile-management/HikerProfileRenderer';
 import ProfileRenderer from './profile-management/ProfileRenderer';
 import HikerProfile from './profile-management/HikerProfile';
+import OrganizatorProfile from './profile-management/OrganizatorProfile';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -71,11 +69,12 @@ function App() {
                 {/* <Route path='/' element={<Reviews eventId={16}></Reviews>}/> */}
                 <Route path='/signin' element={<SignIn></SignIn>}/>
                 <Route path='/signup' element={<SignUp></SignUp>}/>
-                <Route path='/profiles'>
-                        <Route path='organizer/:profileId' element={<AuthRequired></AuthRequired>}></Route>
+            
+                  <Route element={<GlobalLayout></GlobalLayout>}>
+                    <Route path='/profiles'>
+                        <Route path='organizer/:profileId' element={<ProfileRenderer><OrganizatorProfile/></ProfileRenderer>}></Route>
                         <Route path='hiker/:profileId' element={<ProfileRenderer><HikerProfile/></ProfileRenderer>} />
                     </Route>
-                  <Route element={<GlobalLayout></GlobalLayout>}>
                     <Route path='/setup' >
                       <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
                       <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>

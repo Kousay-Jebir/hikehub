@@ -28,25 +28,10 @@ export default function HikerProfile({ profile }) {
   );
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        px: 2,
-        py: 4,
-        backgroundColor: theme.palette.background.default, // Background color from theme
-      }}
-    >
       <Paper
         elevation={3}
         sx={{
           p: 4,
-          width: "100%",
-          maxWidth: 800,
           borderRadius: 2,
           backgroundColor: theme.palette.background.paper, // Card color from theme
           display: "flex",
@@ -104,6 +89,5 @@ export default function HikerProfile({ profile }) {
           </Box>
         </Box>
       </Paper>
-    </Container>
   );
 }
