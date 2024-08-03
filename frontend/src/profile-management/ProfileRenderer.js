@@ -8,12 +8,13 @@ import { Box ,Container} from "@mui/material";
 import { cloneElement } from "react";
 import useFetch from "../shared/hooks/useFetch";
 import { useTheme } from "@emotion/react";
-export default function ProfileRenderer({children}) {
+export default function ProfileRenderer({children,id}) {
     const authData = useContext(AuthContext);
     const theme = useTheme();
     let params = useParams();
+    let userId = id || params.profileId;
     const [profile,setProfile] = useState({});
-    const { data, loading, error } = useFetch(()=>  getProfile('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBsZWFzZSIsInN1YiI6Nywicm9sZXMiOlsiaGlrZXIiXSwiaWF0IjoxNzIyNzE3ODMzLCJleHAiOjE3MjI3MjE0MzN9.1RJqq0PjB5EeIwwfL9FWV7m9gMsYAC6SAGoSmQ3oFSI', params.profileId))
+    const { data, loading, error } = useFetch(()=>  getProfile(authData.user.accessToken, userId))
       /* useEffect(() => {
         const fetchProfile = async () => {
           try {
