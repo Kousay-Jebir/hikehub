@@ -85,6 +85,10 @@ export class UserProfilesService {
     return profile.user.userName
 }
 
+  async getUserIdByUserProfileID (id:number) : Promise<number | null> {
+    const userId = (await this.userProfileRepository.findOne({where:{id}})).userId;
+    return userId;
+  }
 
 
 }

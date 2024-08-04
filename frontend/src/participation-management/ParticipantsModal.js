@@ -5,6 +5,7 @@ import getEventParticipations from '../api/participation-management/services/get
 import AuthContext from '../auth/context/AuthContext';
 import getUserProfile from '../api/profile-management/services/getUserProfile';
 import Reviews from '../review-management/Reviews';
+import getUserId from '../api/profile-management/services/getUserId';
 
 const ParticipantsModal = ({ open, onClose, event }) => {
   const authData = useContext(AuthContext);
@@ -43,7 +44,9 @@ const ParticipantsModal = ({ open, onClose, event }) => {
     const fetchParticipants = async () => {
       try {
         const participantPromises = participations.map(async (participation) => {
-          const result = await getUserProfile(authData.user.accessToken, participation.userProfileId);
+          console.log(participation)
+          const userId = await  getUserId(authData.user.accessToken,participation.userProfileId)
+          const result = await getUserProfile(authData.user.accessToken, userId);
           return result;
         });
 

@@ -12,6 +12,10 @@ import { Role } from 'src/enums/role.enum';
 @Controller('user-profiles')
 export class UserProfilesController {
   constructor(private readonly userProfilesService: UserProfilesService) {}
+  @Get("user/:id") 
+  getUserIdByUserProfileId(@Param('id',ParseIntPipe) id:number) {
+    return this.userProfilesService.getUserIdByUserProfileID(id);
+  }
 
   @Post()
   create(@Body() createUserProfileDto: CreateUserProfileDto) {
