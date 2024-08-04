@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { OrganizationProfilesService } from './organization-profiles.service';
 import { CreateOrganizationProfileDto } from './dto/create-organization-profile.dto';
 import { UpdateOrganizationProfileDto } from './dto/update-organization-profile.dto';
@@ -24,13 +24,13 @@ export class OrganizationProfilesController {
   }
 
   @Get("user/:id")
-  async getOrganizationProfileIdByUserId(@Param('id') id: string){
-    return await this.organizationProfilesService.findOrganizationProfileByUserId(+id);
+  async getOrganizationProfileIdByUserId(@Param('id',ParseIntPipe) id: number){
+    return await this.organizationProfilesService.findOrganizationProfileByUserId(id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationProfilesService.findOne(+id);
+  findOne(@Param('id',ParseIntPipe) id: number) {
+    return this.organizationProfilesService.findOne(id);
   }
 
   @UseGuards(AuthGuard,RolesGuard)
@@ -38,14 +38,14 @@ export class OrganizationProfilesController {
   @ApiBearerAuth()
   @Ownership()
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrganizationProfileDto: UpdateOrganizationProfileDto) {
-    return this.organizationProfilesService.update(+id, updateOrganizationProfileDto);
+  update(@Param('id',ParseIntPipe) id: number, @Body() updateOrganizationProfileDto: UpdateOrganizationProfileDto) {
+    return this.organizationProfilesService.update(id, updateOrganizationProfileDto);
   }
   
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.organizationProfilesService.remove(+id);
+  remove(@Param('id',ParseIntPipe) id: number) {
+    return this.organizationProfilesService.remove(id);
   }
 
  

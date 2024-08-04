@@ -7,7 +7,6 @@ export default async function editProfileSettings(accessToken,userId,settings){
     try {
       const response = await axios.patch(USER_PROFILE_SETTINGS + userId,
         {...settings,
-        id:userId
         },
         {
           headers: {

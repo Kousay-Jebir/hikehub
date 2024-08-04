@@ -26,7 +26,6 @@ export class CreateUserProfileDto {
   nationality?: string;
 
   @IsOptional()
-  @IsPhoneNumber(null)
   phoneNumber?: string;
 
   @IsOptional()

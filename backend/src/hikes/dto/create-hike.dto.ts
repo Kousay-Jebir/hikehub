@@ -3,8 +3,9 @@ import { Type } from 'class-transformer';
 import { CreateLocationDto } from 'src/locations/dto/create-location.dto';
 
 export class CreateHikeDto {
+  @IsOptional()
   @IsNumber()
-  eventId: number;
+  eventId?: number;
 
   @IsString()
   title: string;
@@ -20,9 +21,7 @@ export class CreateHikeDto {
   @IsDateString()
   endTime?: Date;
 
-  @IsOptional()
-  @IsString()
-  location?: string;
+
 
   @IsOptional()
   @IsArray()

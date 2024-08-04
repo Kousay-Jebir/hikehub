@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { UserSettingsService } from './user-settings.service';
 import { CreateUserSettingDto } from './dto/create-user-setting.dto';
 import { UpdateUserSettingDto } from './dto/update-user-setting.dto';
@@ -28,8 +28,8 @@ export class UserSettingsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userSettingsService.findOne(+id);
+  findOne(@Param('id',ParseIntPipe) id: number) {
+    return this.userSettingsService.findOne(id);
   }
 
 
@@ -38,13 +38,13 @@ export class UserSettingsController {
   @UseGuards(AuthGuard,RolesGuard)
   @Roles(Role.Hiker)
   @Ownership()
-  async update(@Param('id') id: string, @Body() updateUserSettingDto: UpdateUserSettingDto) {
-    const userProfileId = await this.userProfileService.findUserProfileByUserId(+id)
+  async update(@Param('id',ParseIntPipe) id: number, @Body() updateUserSettingDto: UpdateUserSettingDto) {
+    const userProfileId = await this.userProfileService.findUserProfileByUserId(id)
     return this.userSettingsService.update(userProfileId, updateUserSettingDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id',ParseIntPipe) id: number) {
     return this.userSettingsService.remove(+id);
   }
 }

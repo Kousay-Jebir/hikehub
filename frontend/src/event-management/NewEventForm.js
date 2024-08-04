@@ -33,7 +33,7 @@ export default function NewEventForm() {
           lng: marker.getLatLng().lng
         }
       })),
-      location: hike.trail ? hike.trail.trailId : null
+      /* location: hike.trail ? hike.trail.trailId : null */
     }));
 
     const eventData = {

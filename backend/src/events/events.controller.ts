@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Param, Body, Put, Delete, NotFoundException, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, Put, Delete, NotFoundException, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -23,12 +23,12 @@ export class EventsController {
 
 
   @Get('organizer/:id')
-  async findAllByOrganizer(@Param('id') id: string): Promise<Event[]> {
-    return this.eventsService.findAllByOrganizer(+id);
+  async findAllByOrganizer(@Param('id',ParseIntPipe) id: number): Promise<Event[]> {
+    return this.eventsService.findAllByOrganizer(id);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Event> {
+  async findOne(@Param('id',ParseIntPipe) id: number): Promise<Event> {
     const event = await this.eventsService.findOne(id);
     if (!event) {
       throw new NotFoundException(`Event with ID ${id} not found`);
@@ -37,7 +37,7 @@ export class EventsController {
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateEventDto: UpdateEventDto): Promise<Event> {
+  async update(@Param('id',ParseIntPipe) id: number, @Body() updateEventDto: UpdateEventDto): Promise<Event> {
     const event = await this.eventsService.update(id, updateEventDto);
     if (!event) {
       throw new NotFoundException(`Event with ID ${id} not found`);
@@ -46,12 +46,12 @@ export class EventsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
+  async remove(@Param('id',ParseIntPipe) id: number): Promise<void> {
     await this.eventsService.remove(id);
   }
 
   @Get('participations/:id')
-  async getEventParticipations(@Param('id') id: number): Promise<Participation[]> {
+  async getEventParticipations(@Param('id',ParseIntPipe) id: number): Promise<Participation[]> {
     return this.eventsService.getParticipations(id);
   }
 }

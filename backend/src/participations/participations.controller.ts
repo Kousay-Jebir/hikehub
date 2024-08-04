@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ParticipationsService } from './participations.service';
 import { CreateParticipationDto } from './dto/create-participation.dto';
 import { UpdateParticipationDto } from './dto/update-participation.dto';
@@ -19,16 +19,16 @@ export class ParticipationsController {
 
   @Get(':eventId/:userProfileId')
   async findOne(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number
   ) {
     return this.participationsService.findOne(eventId, userProfileId);
   }
 
   @Patch(':eventId/:userProfileId')
   async updateParticipation(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number,
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number,
     @Body() updateParticipationDto: UpdateParticipationDto
   ) {
     return this.participationsService.updateParticipation(eventId, userProfileId, updateParticipationDto);
@@ -36,8 +36,8 @@ export class ParticipationsController {
 
   @Delete(':eventId/:userProfileId')
   async removeParticipation(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number
   ) {
     return this.participationsService.removeParticipation(eventId, userProfileId);
   }

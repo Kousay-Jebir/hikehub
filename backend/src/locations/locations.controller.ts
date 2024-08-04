@@ -7,7 +7,7 @@ import { UpdateLocationDto } from './dto/update-location.dto';
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
-  @Post()
+  /* @Post()
   create(@Body() createLocationDto: CreateLocationDto) {
     return this.locationsService.create(createLocationDto);
   }
@@ -30,5 +30,5 @@ export class LocationsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.locationsService.remove(+id);
-  }
+  } */
 }

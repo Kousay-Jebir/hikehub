@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Put, Delete, Param, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Param, Body, HttpCode, HttpStatus, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -17,7 +17,7 @@ export class ReviewsController {
   @ApiBearerAuth()
   @Get('event/:eventId')
   async getAllReviewsForEvent(
-  @Param('eventId') eventId: number):Promise<any[]>{
+  @Param('eventId',ParseIntPipe) eventId: number):Promise<any[]>{
     return this.reviewService.getAllReviewsForEvent(eventId);
   }
 
@@ -30,16 +30,16 @@ export class ReviewsController {
 
   @Get(':eventId/:userProfileId')
   async getReview(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number
   ): Promise<Review> {
     return this.reviewService.getReview(eventId, userProfileId);
   }
 
   @Put(':eventId/:userProfileId')
   async updateReview(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number,
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number,
     @Body() updateReviewDto: UpdateReviewDto
   ): Promise<Review> {
     return this.reviewService.updateReview(eventId, userProfileId, updateReviewDto);
@@ -48,8 +48,8 @@ export class ReviewsController {
   @Delete(':eventId/:userProfileId')
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteReview(
-    @Param('eventId') eventId: number,
-    @Param('userProfileId') userProfileId: number
+    @Param('eventId',ParseIntPipe) eventId: number,
+    @Param('userProfileId',ParseIntPipe) userProfileId: number
   ): Promise<void> {
     return this.reviewService.deleteReview(eventId, userProfileId);
   }

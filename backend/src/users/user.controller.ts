@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, NotFoundException, BadRequestException, UseInterceptors, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, NotFoundException, BadRequestException, UseInterceptors, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,7 +24,7 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @UseInterceptors(UserInfoInterceptor)
-  async getInfo(@Param('id') id: number): Promise<User> {
+  async getInfo(@Param('id',ParseIntPipe) id: number): Promise<User> {
     const info = await this.usersService.getInfo(id);
     if (!info) {
       throw new NotFoundException(`Info with ID ${id} not found`);
@@ -33,7 +33,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findById(@Param('id') id: number): Promise<User> {
+  async findById(@Param('id',ParseIntPipe) id: number): Promise<User> {
     const user = await this.usersService.findById(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -42,7 +42,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number): Promise<void> {
+  async remove(@Param('id',ParseIntPipe) id: number): Promise<void> {
     const user = await this.usersService.findById(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);

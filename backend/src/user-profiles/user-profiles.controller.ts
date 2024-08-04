@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { UserProfilesService } from './user-profiles.service';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
 import { UpdateUserProfileDto } from './dto/update-user-profile.dto';
@@ -24,22 +24,22 @@ export class UserProfilesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userProfilesService.findOne(+id);
+  findOne(@Param('id',ParseIntPipe) id: number) {
+    return this.userProfilesService.findOne(id);
   }
   @ApiBearerAuth()
   @UseGuards(AuthGuard,RolesGuard)
   @Ownership()
   @Roles(Role.Hiker)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserProfileDto: UpdateUserProfileDto) {
-    console.log(+id);
-    return this.userProfilesService.update(+id, updateUserProfileDto);
+  update(@Param('id',ParseIntPipe) id: number, @Body() updateUserProfileDto: UpdateUserProfileDto) {
+    console.log(id);
+    return this.userProfilesService.update(id, updateUserProfileDto);
 
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userProfilesService.remove(+id);
+  remove(@Param('id',ParseIntPipe) id: number) {
+    return this.userProfilesService.remove(id);
   }
 }
