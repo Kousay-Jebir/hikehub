@@ -7,6 +7,7 @@ import getUserProfile from '../api/profile-management/services/getUserProfile';
 import Reviews from '../review-management/Reviews';
 import getUserId from '../api/profile-management/services/getUserId';
 import Participant from './Participant';
+import setParticipantAttendance from '../api/participation-management/services/setParticipantAttendance';
 
 const ParticipantsModal = ({ open, onClose, event }) => {
   const authData = useContext(AuthContext);
@@ -26,6 +27,14 @@ const ParticipantsModal = ({ open, onClose, event }) => {
     p: 4,
   };
 
+  const setAttendance = (userProfileId,didAttend)=>{
+    try{
+      setParticipantAttendance(authData.user.accessToken,event.id,userProfileId,didAttend)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
   // Fetch participations
  /*  useEffect(() => {
     const fetchParticipations = async () => {
@@ -80,7 +89,7 @@ const ParticipantsModal = ({ open, onClose, event }) => {
             </Typography>
             <List>
               {participants.map((participant) => (
-                <Participant participant={participant}/>
+                <Participant participant={participant} eventEndDate={event.endDate} setAttendance={setAttendance}/>
               ))}
             </List>
           </>

@@ -1,5 +1,5 @@
 // src/participations/dto/create-participation.dto.ts
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsBoolean, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateParticipationDto {
   @IsInt()
@@ -9,4 +9,8 @@ export class CreateParticipationDto {
   @IsInt()
   @IsNotEmpty()
   userProfileId: number;
+
+  @IsOptional()
+  @IsBoolean()
+  didAttend: boolean;
 }

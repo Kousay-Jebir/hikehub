@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Participation } from './entities/participation.entity';
@@ -70,11 +70,20 @@ async updateParticipation(eventId: number, userProfileId: number, updateDto: Upd
   const participation = await this.participationRepository.findOne({
     where: { eventId, userProfileId }
   });
-
   if (!participation) {
-    throw new NotFoundException('Participation not found');
+    throw new NotFoundException('Participation record not found');
   }
 
+  const event = await this.eventsService.findOne(participation.eventId);
+    if (!event) {
+      throw new NotFoundException('Event not found');
+    }
+    const eventEndDate = new Date(event.endDate);
+    const currentDate = new Date();
+    console.log(eventEndDate + "/" + currentDate);
+    if (currentDate <= eventEndDate) {
+      throw new ForbiddenException('Cannot update participation before the event ends');
+    }
   // Update the participation with the new values
   Object.assign(participation, updateDto);
 

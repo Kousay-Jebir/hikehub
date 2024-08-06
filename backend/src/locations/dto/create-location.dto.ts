@@ -1,8 +1,9 @@
-import { IsString, IsObject, IsNumber } from 'class-validator';
+import { IsString, IsObject, IsNumber, IsOptional } from 'class-validator';
 
 export class CreateLocationDto {
+  @IsOptional()
   @IsNumber()
-  hikeId: number;
+  hikeId?: number;
 
   @IsString()
   label: string;
