@@ -14,7 +14,8 @@ export default function ProfileRenderer({children,id}) {
     let params = useParams();
     let userId = id || params.profileId;
     const [profile,setProfile] = useState({});
-    const { data, loading, error } = useFetch(()=>  getProfile(authData.user.accessToken, userId))
+    const { data, loading, error } = useFetch(()=>  getProfile(authData.user.accessToken, userId));
+    const isProfileOwner = authData.user.userId === userId;
       /* useEffect(() => {
         const fetchProfile = async () => {
           try {
@@ -32,7 +33,7 @@ export default function ProfileRenderer({children,id}) {
     return (
       <>
             {Children.map(children, child =>
-                cloneElement(child, { profile:data })
+                cloneElement(child, { profile:data, isProfileOwner:isProfileOwner })
             )}
       </>
     );

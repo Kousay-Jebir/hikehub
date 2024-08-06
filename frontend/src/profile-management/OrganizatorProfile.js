@@ -14,7 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
 
-export default function OrganizatorProfile({ profile }) {
+export default function OrganizatorProfile({ profile,isProfileOwner }) {
   const navigate = useNavigate();
   const theme = useTheme(); // Access the theme
 
@@ -53,11 +53,11 @@ export default function OrganizatorProfile({ profile }) {
             <Typography variant="body1" color="textSecondary" paragraph>
               {profile.description || renderPrivateField()}
             </Typography>
-            <Tooltip title="Edit Profile">
+            {isProfileOwner?<Tooltip title="Edit Profile">
               <IconButton color="primary" onClick={() => navigate("/setup/organization-profile")}>
                 <EditIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>:null}
           </Box>
         </Box>
         <Divider sx={{ my: 4, width: "100%", bgcolor: theme.palette.divider }} />

@@ -15,7 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import LockIcon from "@mui/icons-material/Lock";
 import { useNavigate } from "react-router-dom";
 
-export default function HikerProfile({ profile }) {
+export default function HikerProfile({ profile,isProfileOwner }) {
   const navigate = useNavigate();
   const theme = useTheme(); // Access the theme
 
@@ -51,11 +51,11 @@ export default function HikerProfile({ profile }) {
         <Typography variant="body1" color="textSecondary" paragraph align="center">
           {profile.bio || renderPrivateField()}
         </Typography>
-        <Tooltip title="Edit Profile">
+        {isProfileOwner? <Tooltip title="Edit Profile">
           <IconButton color="primary" onClick={() => navigate("/setup/hiker-profile")}>
             <EditIcon />
           </IconButton>
-        </Tooltip>
+        </Tooltip>:null}
         <Divider sx={{ my: 4, width: "100%", bgcolor: theme.palette.divider }} />
         <Box width="100%">
           <Typography variant="h6" gutterBottom sx={{ color: theme.palette.text.secondary }}>
