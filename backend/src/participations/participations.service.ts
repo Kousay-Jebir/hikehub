@@ -88,4 +88,26 @@ async removeParticipation(eventId: number, userProfileId: number): Promise<void>
     throw new NotFoundException('Participation not found');
   }
 }
+
+async getEventParticipants (eventId:number){
+  // Fetch all reviews for the event
+  const participations = await this.participationRepository.find({ where: { eventId} });
+  
+  // Use Promise.all to handle asynchronous userName fetching
+  const participationsWithUserName = await Promise.all(
+      participations.map(async (participation) => {
+          // Fetch userName for each review's userProfileId
+          const userName = await this.userProfilesService.getUserNameByUserProfileId(participation.userProfileId);
+          const userId = await this.userProfilesService.getUserIdByUserProfileID(participation.userProfileId);
+          return {
+              ...participation, 
+              userName,
+              userId
+          };
+      })
+  );
+  
+  return participationsWithUserName;
+  }
+
 }

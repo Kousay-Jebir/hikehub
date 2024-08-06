@@ -97,7 +97,7 @@ export class EventsService {
   async getParticipations(eventId: number): Promise<Participation[]> {
     const event = await this.eventRepository.findOne({
       where: { id: eventId },
-      relations: ['participants'],
+      relations: ['participants','participants.'],
     });
 
     if (!event) {
@@ -106,4 +106,7 @@ export class EventsService {
 
     return event.participants;
   }
+  
 }
+
+

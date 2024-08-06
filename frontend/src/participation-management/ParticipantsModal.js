@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal, Box, Typography, List, ListItem, ListItemText, Avatar, Tabs, Tab, Divider } from '@mui/material';
 import { useTheme } from '@emotion/react';
-import getEventParticipations from '../api/participation-management/services/getEventParticipations';
+import getEventParticipations from '../api/participation-management/services/getEventParticipants';
 import AuthContext from '../auth/context/AuthContext';
 import getUserProfile from '../api/profile-management/services/getUserProfile';
 import Reviews from '../review-management/Reviews';
 import getUserId from '../api/profile-management/services/getUserId';
+import Participant from './Participant';
 
 const ParticipantsModal = ({ open, onClose, event }) => {
   const authData = useContext(AuthContext);
   const theme = useTheme();
   const [participants, setParticipants] = useState([]);
-  const [participations, setParticipations] = useState([]);
+/*   const [participations, setParticipations] = useState([]); */
   const [selectedTab, setSelectedTab] = useState(0); // State for managing the selected tab
   const style = {
     position: 'absolute',
@@ -26,7 +27,7 @@ const ParticipantsModal = ({ open, onClose, event }) => {
   };
 
   // Fetch participations
-  useEffect(() => {
+ /*  useEffect(() => {
     const fetchParticipations = async () => {
       try {
         const result = await getEventParticipations(authData.user.accessToken, event.id);
@@ -37,30 +38,20 @@ const ParticipantsModal = ({ open, onClose, event }) => {
     };
 
     fetchParticipations();
-  }, [authData.user.accessToken, event.id]);
+  }, [authData.user.accessToken, event.id]); */
 
   // Fetch participants
   useEffect(() => {
     const fetchParticipants = async () => {
       try {
-        const participantPromises = participations.map(async (participation) => {
-          console.log(participation)
-          const userId = await  getUserId(authData.user.accessToken,participation.userProfileId)
-          const result = await getUserProfile(authData.user.accessToken, userId);
-          return result;
-        });
-
-        const participantsData = await Promise.all(participantPromises);
-        setParticipants(participantsData);
+        const result = await getEventParticipations(authData.user.accessToken,event.id);
+        setParticipants(result);
       } catch (error) {
         console.error("Error fetching participants:", error);
       }
     };
-
-    if (participations.length > 0) {
       fetchParticipants();
-    }
-  }, [authData.user.accessToken, participations]);
+  }, [authData.user.accessToken]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -89,10 +80,7 @@ const ParticipantsModal = ({ open, onClose, event }) => {
             </Typography>
             <List>
               {participants.map((participant) => (
-                <ListItem key={participant.id}>
-                  <Avatar src={participant.avatar} alt={participant.name} sx={{ mr: 2 }} />
-                  <ListItemText primary={participant.userName} />
-                </ListItem>
+                <Participant participant={participant}/>
               ))}
             </List>
           </>

@@ -4,7 +4,7 @@ import { GET_EVENT_PARTICIPATIONS} from "../routes";
 
 
 
-export default async function getEventParticipations(accessToken,eventId){
+export default async function getEventParticipants(accessToken,eventId){
     try {
       const response = await axios.get(GET_EVENT_PARTICIPATIONS + eventId,
         {

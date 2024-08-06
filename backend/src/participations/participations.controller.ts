@@ -17,6 +17,14 @@ export class ParticipationsController {
     return this.participationsService.findAll();
   }
 
+
+  @Get("event/:eventId")
+  async getParticipants(
+    @Param('eventId',ParseIntPipe) eventId:number
+  ){
+    return this.participationsService.getEventParticipants(eventId);
+  }
+
   @Get(':eventId/:userProfileId')
   async findOne(
     @Param('eventId',ParseIntPipe) eventId: number,
