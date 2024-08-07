@@ -13,5 +13,6 @@ export class OrganizationSearchStrategy implements SearchStrategy<User> {
         .where('user.username LIKE :query', { query: `%${query}%` })
         .orWhere('organization_profile.name LIKE :query', { query: `%${query}%` })
         .orWhere('organization_profile.description LIKE :query', { query: `%${query}%` })
+        queryBuilder.select('user.userName');
     }
   }

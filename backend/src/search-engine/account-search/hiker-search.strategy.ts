@@ -20,5 +20,7 @@ export class HikerSearchStrategy implements SearchStrategy<User> {
       .where('user.username LIKE :query', { query: `%${query}%` })
       .orWhere('user_profile.firstName LIKE :query', { query: `%${query}%` })
       .orWhere('user_profile.lastName LIKE :query', { query: `%${query}%` });
+    
+    queryBuilder.select('user.userName');
   }
 }
