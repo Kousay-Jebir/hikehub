@@ -16,6 +16,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import AuthContext from '../../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import SearchComponent from '../components/SearchComponent'; // Import the new SearchComponent
+import Search from '../search-engine/Search';
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -84,7 +85,7 @@ export default function Navbar() {
           </Typography>
 
           {/* Search Component */}
-          <SearchComponent />
+          <Search></Search>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
