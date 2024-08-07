@@ -11,6 +11,9 @@ export class OrganizationProfile {
   @Column()
   userId: number;
 
+  @Column({ nullable: true })
+  name: string;  
+
   @Column({ type: 'text', nullable: true })
   description: string;
 

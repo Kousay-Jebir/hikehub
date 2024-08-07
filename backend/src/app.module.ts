@@ -21,6 +21,7 @@ import { Participation } from './participations/entities/participation.entity';
 import { Review } from './reviews/entities/review.entity';
 import { Location } from './locations/entities/location.entity';
 import { UserSetting } from './user-settings/entities/user-setting.entity';
+import { SearchModule } from './search-engine/search.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UserSetting } from './user-settings/entities/user-setting.entity';
     ParticipationsModule,
     ReviewsModule,
     OrganizationProfilesModule,
+    SearchModule
   ],
   controllers: [AppController],
   providers: [AppService],

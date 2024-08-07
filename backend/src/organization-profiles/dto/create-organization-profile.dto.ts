@@ -15,4 +15,8 @@ export class CreateOrganizationProfileDto {
   @IsOptional()
   @IsObject()
   social?: object;
+
+  @IsString()
+  @IsOptional()
+  name?: string;
 }

@@ -17,7 +17,6 @@ export class CreateUserProfileDto {
   bio?: string;
 
   @IsOptional()
-  @IsISO8601()
   @Type(() => Date)
   birthday?: Date;
 
