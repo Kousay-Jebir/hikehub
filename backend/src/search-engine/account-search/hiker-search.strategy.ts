@@ -7,20 +7,19 @@ export class HikerSearchStrategy implements SearchStrategy<User> {
   apply(queryBuilder: any, searchParams: SearchQuery): void {
     const { query, filters } = searchParams;
 
-    if (filters?.nationality) {
-      queryBuilder
-        .leftJoinAndSelect('user.userProfile', 'user_profile')
-        .where('user_profile.nationality = :nationality', { nationality: filters.nationality });
-    } else {
-      queryBuilder
-        .leftJoinAndSelect('user.userProfile', 'user_profile');
-    }
-
+    // Apply role-based filtering
     queryBuilder
-      .where('user.username LIKE :query', { query: `%${query}%` })
+      .leftJoinAndSelect('user.userProfile', 'user_profile')
+      .where('user.roles = :role', { role: 'hiker' }) // Ensure only hikers are included
+      .andWhere('user.userName LIKE :query', { query: `%${query}%` })
       .orWhere('user_profile.firstName LIKE :query', { query: `%${query}%` })
       .orWhere('user_profile.lastName LIKE :query', { query: `%${query}%` });
+
+    if (filters?.nationality) {
+      queryBuilder
+        .andWhere('user_profile.nationality = :nationality', { nationality: filters.nationality });
+    }
     
-    queryBuilder.select('user.userName');
+    queryBuilder.select(['user.userName']);
   }
 }

@@ -10,13 +10,12 @@ import {
   MenuItem,
   Avatar,
   Button,
-  TextField,
-  Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
 import AuthContext from '../../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import SearchComponent from '../components/SearchComponent'; // Import the new SearchComponent
 
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -49,15 +48,15 @@ export default function Navbar() {
         navigate('/setup/hiker-profile');
       }
     } else if (setting === 'Account') {
-        if (user.roles.includes('organizer')) {
-          navigate('/organizer/account');
-        } else if (user.roles.includes('hiker')) {
-          navigate('/hiker/account');
-        }
+      if (user.roles.includes('organizer')) {
+        navigate('/organizer/account');
+      } else if (user.roles.includes('hiker')) {
+        navigate('/hiker/account');
+      }
     } else if (setting === 'Logout') {
-      authData.logout()
+      authData.logout();
       console.log('Logout');
-      // You can also add logout logic here, for example, calling a logout function from your AuthContext
+      // You can also add logout logic here
     }
   };
 
@@ -84,15 +83,8 @@ export default function Navbar() {
             HikeHub
           </Typography>
 
-          <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
-            <TextField
-              placeholder="Search..."
-              variant="outlined"
-              size="small"
-              InputProps={{ sx: { bgcolor: 'background.paper' } }}
-              sx={{ width: '100%', maxWidth: 400, ml: 2 }}
-            />
-          </Box>
+          {/* Search Component */}
+          <SearchComponent />
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -173,9 +165,7 @@ export default function Navbar() {
             }}
             open={Boolean(anchorElNav)}
             onClose={handleCloseNavMenu}
-            sx={{
-              display: { xs: 'block', md: 'none' },
-            }}
+            sx={{ display: { xs: 'block', md: 'none' } }}
           >
             {pages.map((page) => (
               <MenuItem key={page} onClick={handleCloseNavMenu}>
