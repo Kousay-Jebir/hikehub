@@ -67,7 +67,16 @@ const SearchComponent = () => {
 
   const handleResultClick = (userId) => {
     // Navigate to the profile page based on the userId and searchType
-    navigate(`/profiles/${searchType}/${userId}`);
+    const mapSearchTypeToUrl = (searchType) => {
+        if(searchType === "organization") {
+            return "organizer"
+        }
+        else{
+            return searchType
+        }
+    }
+    const mappedSearchType = mapSearchTypeToUrl(searchType)
+    navigate(`/profiles/${mappedSearchType}/${userId}`);
     setShowResults(false); // Optionally close the results dropdown
   };
   
