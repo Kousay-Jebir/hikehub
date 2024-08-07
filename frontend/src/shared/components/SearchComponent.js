@@ -76,7 +76,8 @@ const SearchComponent = () => {
         }
     }
     const mappedSearchType = mapSearchTypeToUrl(searchType)
-    navigate(`/profiles/${mappedSearchType}/${userId}`);
+    navigate("/");
+    setTimeout(()=>{navigate(`/profiles/${mappedSearchType}/${userId}`);},0)
     setShowResults(false); // Optionally close the results dropdown
   };
   
