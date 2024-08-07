@@ -17,6 +17,7 @@ import {
   useTheme
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 import searchForHikers from '../../api/search-engine/services/searchForHikers';
 import searchForOrganizations from '../../api/search-engine/services/searchForOrganizations';
@@ -29,6 +30,7 @@ const SearchComponent = () => {
   const searchRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
@@ -62,6 +64,13 @@ const SearchComponent = () => {
   const handleClickAway = () => {
     setShowResults(false);
   };
+
+  const handleResultClick = (userId) => {
+    // Navigate to the profile page based on the userId and searchType
+    navigate(`/profiles/${searchType}/${userId}`);
+    setShowResults(false); // Optionally close the results dropdown
+  };
+  
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -125,8 +134,12 @@ const SearchComponent = () => {
           >
             <List>
               {results.length > 0 ? (
-                results.map((item, index) => (
-                  <ListItem button key={index}>
+                results.map((item) => (
+                  <ListItem 
+                    key={item.userId} 
+                    onClick={() => handleResultClick(item.id)}
+                    sx={{ cursor: 'pointer' }} // Optional: change cursor to pointer
+                  >
                     <ListItemText primary={item.userName} />
                   </ListItem>
                 ))

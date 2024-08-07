@@ -20,6 +20,6 @@ export class HikerSearchStrategy implements SearchStrategy<User> {
         .andWhere('user_profile.nationality = :nationality', { nationality: filters.nationality });
     }
     
-    queryBuilder.select(['user.userName']);
+    queryBuilder.select(['user.userName','user.id']);
   }
 }
