@@ -4,6 +4,7 @@ import SearchModal from './SearchModal';
 import searchReducer, { initialState } from './searchReducer';
 import searchForHikers from '../../api/search-engine/services/searchForHikers';
 import searchForOrganizations from '../../api/search-engine/services/searchForOrganizations';
+import searchForEvents from '../../api/search-engine/services/searchForEvents';
 const Search = () => {
   const [open, setOpen] = useState(false);
   const [state, dispatch] = useReducer(searchReducer, initialState);
@@ -16,10 +17,13 @@ const Search = () => {
     try {
       let response;
       if (state.searchType === 'hiker') {
-        response = await searchForHikers(state.query, state.nationality);
+        response = await searchForHikers(state.query, state.filters.nationality);
       } else if (state.searchType === 'organization') {
         response = await searchForOrganizations(state.query);
       }
+        else if (state.searchType === 'event') {
+            response = await searchForEvents(state.query,state.filters.openForParticipation)
+        }
       // Add logic for event search if needed
       console.log(response.data)
       setResults(response.data);

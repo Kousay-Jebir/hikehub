@@ -11,15 +11,15 @@ const EventSearchResults = ({ results }) => {
       {results.map((result) => (
         <ListItem key={result.id} alignItems="flex-start">
           <ListItemText
-            primary={result.eventName}
+            primary={result.title}
             secondary={
               <React.Fragment>
                 <Typography component="span" variant="body2" color="textPrimary">
-                  {result.date}
+                  {result.startDate}
                 </Typography>
-                {result.additionalInfo && (
+                {(
                   <Box component="span" ml={1}>
-                    {result.additionalInfo}
+                    {result.location}
                   </Box>
                 )}
               </React.Fragment>

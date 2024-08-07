@@ -9,15 +9,9 @@ import OrganizationFilters from './OrganizationFilters';
 
 const SearchModal = ({ open, onClose, state, dispatch, onSearch, results }) => {
   const theme = useTheme();
+  const mapSearchTypeToUrl = (searchType) => {     if(searchType === "organization") {         return "organizer"     }     else{         return searchType     } }
   const [searchPerformed, setSearchPerformed] = useState(false);
-  const mapSearchTypeToUrl = (searchType) => {
-    if(searchType === "organization") {
-        return "organizer"
-    }
-    else{
-        return searchType
-    }
-}
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -109,5 +103,3 @@ const SearchModal = ({ open, onClose, state, dispatch, onSearch, results }) => {
 };
 
 export default SearchModal;
-
-

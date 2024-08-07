@@ -1,8 +1,8 @@
-// src/search/search.controller.ts
 import { Controller, Get, Query } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { User } from '../users/user.entity';
 import { OrganizationProfile } from '../organization-profiles/entities/organization-profile.entity';
+import { Event } from 'src/events/entities/event.entity';
 
 @Controller('search')
 export class SearchController {
@@ -23,10 +23,23 @@ export class SearchController {
   @Get('organizations')
   async searchOrganizations(
     @Query('q') query: string,
-  ): Promise<(User | OrganizationProfile)[]> {
+  ): Promise<User[]> {
     const searchParams = {
       query,
     };
-    return this.searchService.search<OrganizationProfile>('organization', searchParams);
+    return this.searchService.search<User>('organization', searchParams);
+  }
+
+  @Get('events')
+  async searchEvents(
+    @Query('q') query: string,
+    @Query('openForParticipation') openForParticipation?: boolean,
+
+  ): Promise<Event[]> {
+    const searchParams = {
+      query,
+      filters: { openForParticipation},
+    };
+    return this.searchService.search<Event>('event', searchParams);
   }
 }

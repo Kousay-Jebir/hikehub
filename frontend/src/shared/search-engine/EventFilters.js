@@ -13,20 +13,18 @@ const EventFilters = ({ state, dispatch }) => {
   return (
     <Box>
       <FormControlLabel
-        control={<Checkbox checked={state.openForParticipation} onChange={handleCheckboxChange} />}
+        control={<Checkbox checked={state.filters.openForParticipation} onChange={handleCheckboxChange} />}
         label="Still Open for Participation"
       />
-      <TextField
+      {/* <TextField
         label="Beginning Date"
         type="date"
         fullWidth
         margin="normal"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={state.date}
+        InputLabelProps={{ shrink: true }}
+        value={state.filters.date}
         onChange={handleDateChange}
-      />
+      /> */}
     </Box>
   );
 };

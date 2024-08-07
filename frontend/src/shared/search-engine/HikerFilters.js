@@ -9,7 +9,7 @@ const HikerFilters = ({ state, dispatch }) => {
   return (
     <FormControl fullWidth margin="normal">
       <InputLabel>Nationality</InputLabel>
-      <Select value={state.nationality} onChange={handleNationalityChange}>
+      <Select value={state.filters.nationality} onChange={handleNationalityChange}>
         <MenuItem value="US">US</MenuItem>
         <MenuItem value="CA">Canada</MenuItem>
         {/* Add more nationalities as needed */}

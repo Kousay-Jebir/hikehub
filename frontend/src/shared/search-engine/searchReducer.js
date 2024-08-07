@@ -1,12 +1,10 @@
-import { useReducer } from 'react';
-
 const initialState = {
   query: '',
   searchType: 'hiker',
   filters: {
     nationality: '',
-    isEventOpen: false,
-    eventStartDate: null,
+    openForParticipation: false,
+    date: '',
   },
 };
 
@@ -15,9 +13,13 @@ function searchReducer(state, action) {
     case 'SET_QUERY':
       return { ...state, query: action.payload };
     case 'SET_SEARCH_TYPE':
-      return { ...state, searchType: action.payload, filters: {} };
-    case 'SET_FILTER':
-      return { ...state, filters: { ...state.filters, ...action.payload } };
+      return { ...state, searchType: action.payload, filters: initialState.filters };
+    case 'SET_NATIONALITY':
+      return { ...state, filters: { ...state.filters, nationality: action.payload } };
+    case 'SET_OPEN_FOR_PARTICIPATION':
+      return { ...state, filters: { ...state.filters, openForParticipation: action.payload } };
+    case 'SET_DATE':
+      return { ...state, filters: { ...state.filters, date: action.payload } };
     default:
       return state;
   }
