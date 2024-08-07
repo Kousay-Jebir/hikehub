@@ -25,6 +25,7 @@ import { green,grey,brown } from '@mui/material/colors';
 import ProfileRenderer from './profile-management/ProfileRenderer';
 import HikerProfile from './profile-management/HikerProfile';
 import OrganizatorProfile from './profile-management/OrganizatorProfile';
+import LandingPage from './home/LandingPage';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -69,8 +70,9 @@ function App() {
                 {/* <Route path='/' element={<Reviews eventId={16}></Reviews>}/> */}
                 <Route path='/signin' element={<SignIn></SignIn>}/>
                 <Route path='/signup' element={<SignUp></SignUp>}/>
-            
+    
                   <Route element={<GlobalLayout></GlobalLayout>}>
+                    <Route path='/' element={<LandingPage></LandingPage>}/>
                     <Route path='/profiles'>
                         <Route path='organizer/:profileId' element={<ProfileRenderer><OrganizatorProfile/></ProfileRenderer>}></Route>
                         <Route path='hiker/:profileId' element={<ProfileRenderer><HikerProfile/></ProfileRenderer>} />

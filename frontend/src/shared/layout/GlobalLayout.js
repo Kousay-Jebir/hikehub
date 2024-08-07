@@ -3,6 +3,7 @@ import { Grid } from '@mui/material';
 import Navbar from '../navbar/Navbar';
 import { Outlet } from 'react-router-dom';
 import { useTheme } from '@emotion/react';
+import Footer from '../footer/Footer';
 
 const GlobalLayout = ({children}) => {
     const theme=useTheme()
@@ -21,6 +22,10 @@ const GlobalLayout = ({children}) => {
                     <Outlet></Outlet>
                 </Grid>
                 <Grid item xs={false} sm={1} /> {/* Empty column for spacing on small screens */}
+            </Grid>
+
+            <Grid item mb={15}>
+                <Footer/>
             </Grid>
         </Grid>
     );
