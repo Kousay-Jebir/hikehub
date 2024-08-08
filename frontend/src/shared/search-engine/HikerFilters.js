@@ -6,16 +6,15 @@ const HikerFilters = ({ state, dispatch }) => {
     dispatch({ type: 'SET_NATIONALITY', payload: e.target.value });
   };
 
-  return (
-    <FormControl fullWidth margin="normal">
+  return null
+    {/* <FormControl fullWidth margin="normal">
       <InputLabel>Nationality</InputLabel>
       <Select value={state.filters.nationality} onChange={handleNationalityChange}>
         <MenuItem value="US">US</MenuItem>
         <MenuItem value="CA">Canada</MenuItem>
-        {/* Add more nationalities as needed */}
       </Select>
-    </FormControl>
-  );
+    </FormControl> */}
+    
 };
 
 export default HikerFilters;
