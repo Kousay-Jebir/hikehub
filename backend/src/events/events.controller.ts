@@ -27,6 +27,11 @@ export class EventsController {
     return this.eventsService.findAllByOrganizer(id);
   }
 
+  @Get('hiker/:id')
+  async findAllByHiker(@Param('id',ParseIntPipe) id: number): Promise<Event[]> {
+    return this.eventsService.findAllByHiker(id);
+  }
+
   @Get(':id')
   async findOne(@Param('id',ParseIntPipe) id: number): Promise<Event> {
     const event = await this.eventsService.findOne(id);

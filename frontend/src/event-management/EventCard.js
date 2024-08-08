@@ -34,7 +34,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const EventCard = ({ event, isEventOwner }) => {
+const EventCard = ({ event, isEventOwner,isParticipation }) => {
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -96,7 +96,7 @@ const EventCard = ({ event, isEventOwner }) => {
               </Menu>
             </>
           ) : (
-            <Button onClick={handleParticipateClick}>Participate</Button>
+            !isParticipation ? <Button onClick={handleParticipateClick}>Participate</Button>:null
           )
         }
         title={event.title}

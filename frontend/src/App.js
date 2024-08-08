@@ -27,6 +27,7 @@ import HikerProfile from './profile-management/HikerProfile';
 import OrganizatorProfile from './profile-management/OrganizatorProfile';
 import LandingPage from './home/LandingPage';
 import EventCardRenderer from './event-management/EventCardRenderer';
+import Participations from './participation-management/Participations';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -77,7 +78,7 @@ function App() {
                         <Route path='organizer/:profileId' element={<ProfileRenderer><OrganizatorProfile/></ProfileRenderer>}></Route>
                         <Route path='hiker/:profileId' element={<ProfileRenderer><HikerProfile/></ProfileRenderer>} />
                     </Route>
-                    <Route path='/events/:eventId' element={<EventCardRenderer><EventCard></EventCard></EventCardRenderer>}/>
+          
                     <Route path='/setup' >
                       <Route path='hiker-profile' element={<AuthRequired><ProfileSetupStepper/></AuthRequired>}></Route>
                       <Route path='organization-profile' element={<AuthRequired><OrganizationProfileSetup/></AuthRequired>}></Route>
@@ -89,8 +90,9 @@ function App() {
                       <Route path='account' element={<AuthRequired><OrganizationProfile></OrganizationProfile></AuthRequired>}></Route>
                     </Route>
                     <Route path='/events'>
+                        <Route path=':eventId' element={<EventCardRenderer><EventCard></EventCard></EventCardRenderer>}/>
                         <Route path='new' element={<AuthRequired><NewEventForm></NewEventForm></AuthRequired>}></Route>
-                        <Route path='test' element={<AuthRequired><Events></Events></AuthRequired>} />
+                        <Route path='participations' element={<AuthRequired><Participations/></AuthRequired>} />
                     </Route>
                   </Route>
               </Routes>

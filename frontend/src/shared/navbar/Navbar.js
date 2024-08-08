@@ -100,9 +100,9 @@ export default function Navbar() {
                   {user.roles.includes("organizer") ? (
                     <Button onClick={() => { navigate('/events/new'); }} sx={{ mx: 1, color: 'red' }}>POST EVENT</Button>
                   ) : (
-                    <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>FEED</Button>
+                    <Button onClick={() => { navigate('/events/participations'); }} sx={{ mx: 1, color: 'inherit' }}>PARTICIPATIONS</Button>
                   )}
-                  <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button>
+                  {/* <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button> */}
                 </>
               )}
             </Box>

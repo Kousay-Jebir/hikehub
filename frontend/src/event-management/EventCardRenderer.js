@@ -55,7 +55,7 @@ export default function EventCardRenderer({ children, id }) {
     return (
         <>
             {Children.map(children, child =>
-                cloneElement(child, { event: data, isEventOwner })
+                cloneElement(child, { event: data, isEventOwner,isParticipation:false })
             )}
         </>
     );

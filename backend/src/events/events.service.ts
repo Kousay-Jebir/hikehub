@@ -94,6 +94,32 @@ export class EventsService {
     return this.eventRepository.find({ where: { organizerId } ,relations:['hikes','hikes.locations']});
   }
 
+  async findAllByHiker(userProfileId: number): Promise<Event[]> {
+    if (typeof userProfileId !== 'number' || isNaN(userProfileId) || userProfileId <= 0) {
+      throw new Error('Invalid userProfileId provided');
+    }
+  
+    try {
+      // Fetch events with their hikes and locations where the userProfileId has participations
+      const events = await this.eventRepository
+        .createQueryBuilder('event')
+        .innerJoin('participation', 'participation', 'participation.eventId = event.id')
+        .leftJoinAndSelect('event.hikes', 'hike')
+        .leftJoinAndSelect('hike.locations', 'location')
+        .where('participation.userProfileId = :userProfileId', { userProfileId })
+        .getMany();
+  
+      return events;
+    } catch (error) {
+      // Log the error for debugging purposes
+      console.error('Error fetching events for hiker:', error);
+      // Throw a user-friendly error message
+      throw new Error('An error occurred while fetching events for the hiker');
+    }
+  }
+  
+  
+
   async getParticipations(eventId: number): Promise<Participation[]> {
     const event = await this.eventRepository.findOne({
       where: { id: eventId },

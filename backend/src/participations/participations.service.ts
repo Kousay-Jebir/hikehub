@@ -6,6 +6,7 @@ import { CreateParticipationDto } from './dto/create-participation.dto';
 import { UpdateParticipationDto } from './dto/update-participation.dto';
 import { UserProfilesService } from 'src/user-profiles/user-profiles.service';
 import { EventsService } from 'src/events/events.service';
+import { Event } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class ParticipationsService {
@@ -62,7 +63,7 @@ export class ParticipationsService {
 
 async findOne(eventId: number, userProfileId: number): Promise<Participation> {
   const participation = await this.participationRepository.findOne({
-    where: { eventId, userProfileId }
+    where: { eventId, userProfileId },relations:['event']
   });
   
   if (!participation) {
@@ -106,6 +107,14 @@ async removeParticipation(eventId: number, userProfileId: number): Promise<void>
     throw new NotFoundException('Participation not found');
   }
 }
+
+
+
+
+
+
+
+
 
 async getEventParticipants (eventId:number){
   // Fetch all reviews for the event
