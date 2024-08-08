@@ -17,6 +17,7 @@ import EventIcon from '@mui/icons-material/Event';
 import HikeCard from '../hike-management/HikeCard';
 import ParticipantsModal from '../participation-management/ParticipantsModal';
 import { useTheme } from '@emotion/react';
+import Reviews from '../review-management/Reviews';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -120,6 +121,8 @@ const EventCard = ({ event, isEventOwner }) => {
         onClose={handleModalClose}
         event={event}
       />
+      {/* Conditionally render Reviews component for non-owners */}
+      {!isEventOwner && <Reviews eventId={event.id} />}
     </Card>
   );
 };
