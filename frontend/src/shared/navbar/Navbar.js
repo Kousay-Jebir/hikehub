@@ -56,6 +56,7 @@ export default function Navbar() {
       }
     } else if (setting === 'Logout') {
       authData.logout();
+      navigate('/')
       console.log('Logout');
       // You can also add logout logic here
     }
