@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,6 +18,10 @@ import HikeCard from '../hike-management/HikeCard';
 import ParticipantsModal from '../participation-management/ParticipantsModal';
 import { useTheme } from '@emotion/react';
 import Reviews from '../review-management/Reviews';
+import { Button } from '@mui/material';
+import participate from '../api/participation-management/services/participate';
+import AuthContext from '../auth/context/AuthContext';
+import getUserProfile from '../api/profile-management/services/getUserProfile';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -34,6 +38,7 @@ const EventCard = ({ event, isEventOwner }) => {
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const authData = useContext(AuthContext);
   const theme = useTheme();
 
   const handleExpandClick = () => {
@@ -57,9 +62,14 @@ const EventCard = ({ event, isEventOwner }) => {
     setModalOpen(false);
   };
 
-  const handleParticipateClick = () => {
-    // Implement participation logic here
-    alert('Participate button clicked!');
+  const handleParticipateClick = async () => {
+    try{
+    const profileId = (await getUserProfile(authData.user.accessToken,authData.user.userId)).id;
+    const response = await participate(authData.user.accessToken,event.id,profileId);
+    }
+    catch(error){
+      console.log(error)
+    }
   };
 
   return (
@@ -86,7 +96,7 @@ const EventCard = ({ event, isEventOwner }) => {
               </Menu>
             </>
           ) : (
-            <button onClick={handleParticipateClick}>Participate</button>
+            <Button onClick={handleParticipateClick}>Participate</Button>
           )
         }
         title={event.title}

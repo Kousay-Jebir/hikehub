@@ -20,36 +20,45 @@ export class ParticipationsService {
     const { eventId, userProfileId } = createParticipationDto;
 
     // Use services to fetch the Event and UserProfile
-    const event = await this.eventsService.findOne(eventId)
+    const event = await this.eventsService.findOne(eventId);
     if (!event) {
-      throw new Error('Event not found');
+        throw new Error('Event not found');
     }
 
-    const userProfile = await this.userProfilesService.findOne(userProfileId)
+    const userProfile = await this.userProfilesService.findOne(userProfileId);
     if (!userProfile) {
-      throw new Error('UserProfile not found');
+        throw new Error('UserProfile not found');
     }
 
     // Check if the UserProfile is already participating in this Event
     const existingParticipation = await this.participationRepository.findOne({
-      where: { eventId, userProfileId }
+        where: { eventId, userProfileId }
     });
 
     if (existingParticipation) {
-      throw new Error('UserProfile has already participated in this Event');
+        throw new Error('UserProfile has already participated in this Event');
+    }
+
+    // Check if the event's start date is in the future
+    const now = new Date();
+    const eventStartDate = new Date(event.startDate); // Assuming event.startDate is in a format parseable by Date
+
+    if (now > eventStartDate) {
+        throw new Error('The event has already started');
     }
 
     // Create a new Participation
     const participation = this.participationRepository.create({
-      eventId,
-      userProfileId,
-      event,
-      userProfile
+        eventId,
+        userProfileId,
+        event,
+        userProfile
     });
 
     // Save the Participation to the database
     return await this.participationRepository.save(participation);
-  }
+}
+
 
 async findOne(eventId: number, userProfileId: number): Promise<Participation> {
   const participation = await this.participationRepository.findOne({
