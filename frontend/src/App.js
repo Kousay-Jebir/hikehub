@@ -70,9 +70,8 @@ function App() {
                 {/* <Route path='/' element={<Reviews eventId={16}></Reviews>}/> */}
                 <Route path='/signin' element={<SignIn></SignIn>}/>
                 <Route path='/signup' element={<SignUp></SignUp>}/>
-    
+                <Route path='/' element={<LandingPage></LandingPage>}/>
                   <Route element={<GlobalLayout></GlobalLayout>}>
-                    <Route path='/' element={<LandingPage></LandingPage>}/>
                     <Route path='/profiles'>
                         <Route path='organizer/:profileId' element={<ProfileRenderer><OrganizatorProfile/></ProfileRenderer>}></Route>
                         <Route path='hiker/:profileId' element={<ProfileRenderer><HikerProfile/></ProfileRenderer>} />

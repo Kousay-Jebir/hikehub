@@ -1,47 +1,30 @@
 // HikeMap.js
-import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import React, { useRef, useEffect } from "react";
+import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 
-const HikeMap = ({ hike, handleHikeChange, index }) => {
-  const [markers, setMarkers] = useState(hike.markers || []);
+const HikeMap = ({ hike }) => {
+  // Ensure hike and its geometry are defined
+  if (!hike || !hike.geometry || !hike.geometry.coordinates) return null;
 
-  const map = useRef();
-
-  const AddMarkerOnClick = () => {
-    useMapEvents({
-      click(e) {
-        const newMarker = e.latlng;
-        setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-        handleHikeChange(index, "markers", [...markers, newMarker]);
-      },
-    });
-    return null;
-  };
-
-  useEffect(() => {
-    if (map.current) {
-      const mapInstance = map.current.leafletElement;
-      mapInstance.invalidateSize();
-    }
-  }, [map]);
-
+  // Convert GeoJSON coordinates to Leaflet format [latitude, longitude]
+  const polylinePositions = hike.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+  
+  // Calculate the center of the map based on the trail
+  const center = polylinePositions.length > 0 ? polylinePositions[Math.floor(polylinePositions.length / 2)] : [36.81897, 10.16579];
+  
   return (
     <MapContainer
-      center={[36.81897, 10.16579]} // Default center, you can set it to your preferred location
-      zoom={13}
-      style={{ height: "300px", width: "100%" }}
-      ref={map}
+      center={center}
+      zoom={16}
+      style={{ height: '300px', width: '100%' }}
+      scrollWheelZoom={true}
+      dragging={false}
+      zoomControl={true}
+      attributionControl={true}
     >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      <AddMarkerOnClick />
-      {markers.map((marker, idx) => (
-        <Marker key={idx} position={marker} />
-      ))}
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <Polyline positions={polylinePositions} color="blue" />
     </MapContainer>
   );
 };
