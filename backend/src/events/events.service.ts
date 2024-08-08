@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -18,17 +18,25 @@ export class EventsService {
   ) {}
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
-    const { organizerId, hikes: hikeDtos, ...eventData } = createEventDto;
-
+    const { organizerId, hikes: hikeDtos, startDate, endDate, ...eventData } = createEventDto;
+  
+    console.log('Received startDate:', startDate);
+    console.log('Received endDate:', endDate);
+  
+    // Validate that endDate is later than startDate
+    if (new Date(startDate) >= new Date(endDate)) {
+      throw new BadRequestException('End date must be later than start date');
+    }
+  
     const organizer = await this.organizationProfileService.findOne(organizerId);
-
+  
     if (!organizer) {
       throw new NotFoundException(`Organizer with ID ${organizerId} not found`);
     }
-
-    const event = this.eventRepository.create({ ...eventData, organizer });
+  
+    const event = this.eventRepository.create({ ...eventData, organizer, startDate, endDate });
     await this.eventRepository.save(event);
-
+  
     if (hikeDtos && hikeDtos.length > 0) {
       const hikes = await Promise.all(
         hikeDtos.map(hikeDto => {
@@ -36,14 +44,14 @@ export class EventsService {
           return this.hikesService.create(hikeWithEventId);
         })
       );
-
+  
       event.hikes = hikes;
       await this.eventRepository.save(event);
     }
-
+  
     return this.findOne(event.id);
   }
-
+  
   async findAll(): Promise<Event[]> {
     return this.eventRepository.find({ relations: ['organizer', 'hikes', 'participants', 'reviews'] });
   }

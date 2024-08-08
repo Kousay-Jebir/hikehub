@@ -33,8 +33,8 @@ const Search = () => {
   };
 
   return (
-    <Container>
-      <Button onClick={handleOpen} variant="contained">
+    <Container >
+      <Button onClick={handleOpen} variant="contained" color='secondary'>
         Search for accounts or events
       </Button>
       <SearchModal 
