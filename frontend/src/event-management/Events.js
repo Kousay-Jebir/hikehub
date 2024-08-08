@@ -25,7 +25,7 @@ export default function Events() {
     return (
         <div>
             {events.map((event, index) => (
-                    <EventCard event={event} key={index} />
+                    <EventCard event={event} key={index} isEventOwner={true} />
             ))}
         </div>
     );

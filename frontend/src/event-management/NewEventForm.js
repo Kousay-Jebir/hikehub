@@ -25,6 +25,7 @@ export default function NewEventForm() {
       title: hike.title,
       description: hike.description,
       startTime: hike.startTime,
+      location: hike.trail.trailId.toString(),
       endTime: hike.endTime,
       locations: hike.markers.map(marker => ({
         label: marker.getPopup().getContent(),
@@ -37,7 +38,7 @@ export default function NewEventForm() {
     }));
 
     const eventData = {
-      organizerId: authData.user.id,
+      organizerId: authData.user.userId,
       title,
       description,
       startDate,

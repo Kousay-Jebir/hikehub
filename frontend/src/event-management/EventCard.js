@@ -17,7 +17,6 @@ import EventIcon from '@mui/icons-material/Event';
 import HikeCard from '../hike-management/HikeCard';
 import ParticipantsModal from '../participation-management/ParticipantsModal';
 import { useTheme } from '@emotion/react';
-import Reviews from '../review-management/Reviews';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,7 +29,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event, isEventOwner }) => {
   const [expanded, setExpanded] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -57,6 +56,11 @@ const EventCard = ({ event }) => {
     setModalOpen(false);
   };
 
+  const handleParticipateClick = () => {
+    // Implement participation logic here
+    alert('Participate button clicked!');
+  };
+
   return (
     <Card sx={{ margin: '20px', border: `2px solid ${theme.palette.primary.main}` }} elevation={0}>
       <CardHeader
@@ -66,18 +70,23 @@ const EventCard = ({ event }) => {
           </Avatar>
         }
         action={
-          <>
-            <IconButton aria-label="settings" onClick={handleMenuClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={handleViewParticipants}>View Participants</MenuItem>
-            </Menu>
-          </>
+          isEventOwner ? (
+            <>
+              <IconButton aria-label="settings" onClick={handleMenuClick}>
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleViewParticipants}>View Participants</MenuItem>
+                {/* Add more menu items here if needed */}
+              </Menu>
+            </>
+          ) : (
+            <button onClick={handleParticipateClick}>Participate</button>
+          )
         }
         title={event.title}
         titleTypographyProps={{ variant: 'h5' }}
@@ -110,9 +119,7 @@ const EventCard = ({ event }) => {
         open={isModalOpen}
         onClose={handleModalClose}
         event={event}
-
-      >
-      </ParticipantsModal>
+      />
     </Card>
   );
 };

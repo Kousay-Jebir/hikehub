@@ -3,6 +3,10 @@ import { Type } from 'class-transformer';
 import { CreateLocationDto } from 'src/locations/dto/create-location.dto';
 
 export class CreateHikeDto {
+
+  @IsString()
+  location: string;
+
   @IsOptional()
   @IsNumber()
   eventId?: number;
