@@ -16,7 +16,7 @@ export class ReviewsService {
     private readonly eventService: EventsService,
     private readonly userProfileService: UserProfilesService,
   ) {}
-  
+
 
   async createReview(createReviewDto: CreateReviewDto): Promise<Review> {
     const { eventId, userProfileId, comment, stars } = createReviewDto;
@@ -40,7 +40,7 @@ export class ReviewsService {
     // Check if the event has ended
     const currentDate = new Date();
     const eventEndDate = new Date(event.endDate); // Assuming event.endDate is in ISO format
-    if (currentDate > eventEndDate) {
+    if (currentDate < eventEndDate) {
       throw new BadRequestException('Cannot post a review before the event has ended');
     }
 

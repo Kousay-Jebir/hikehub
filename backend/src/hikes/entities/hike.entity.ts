@@ -16,10 +16,10 @@ export class Hike {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @Column()
+  @Column({ type: 'datetime' })
   startTime: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true ,type:'datetime'})
   endTime: Date;
 
   @Column({ nullable: true })

@@ -18,12 +18,12 @@ export class CreateHikeDto {
   @IsString()
   description?: string;
 
-  @IsDateString()
-  startTime: Date;
+  @IsString()
+  startTime: string;
 
   @IsOptional()
-  @IsDateString()
-  endTime?: Date;
+  @IsString()
+  endTime?: string;
 
 
 

@@ -10,12 +10,12 @@ export class CreateEventDto {
   @IsString()
   description?: string;
 
-  @IsDateString()
-  startDate: Date;
+  @IsString()
+  startDate: string;
 
   @IsOptional()
-  @IsDateString()
-  endDate?: Date;
+  @IsString()
+  endDate?: string;
 
   @IsOptional()
   @IsString()
