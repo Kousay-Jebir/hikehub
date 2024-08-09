@@ -16,6 +16,7 @@ export class ReviewsService {
     private readonly eventService: EventsService,
     private readonly userProfileService: UserProfilesService,
   ) {}
+  
 
   async createReview(createReviewDto: CreateReviewDto): Promise<Review> {
     const { eventId, userProfileId, comment, stars } = createReviewDto;
