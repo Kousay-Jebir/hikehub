@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,10 +18,35 @@ import HikeCard from '../hike-management/HikeCard';
 import ParticipantsModal from '../participation-management/ParticipantsModal';
 import { useTheme } from '@emotion/react';
 import Reviews from '../review-management/Reviews';
-import { Button } from '@mui/material';
+import { Button, TextField, Rating } from '@mui/material';
 import participate from '../api/participation-management/services/participate';
 import AuthContext from '../auth/context/AuthContext';
 import getUserProfile from '../api/profile-management/services/getUserProfile';
+
+// Reducer function
+const reviewReducer = (state, action) => {
+  switch (action.type) {
+    case 'SET_RATING':
+      return { ...state, rating: action.payload };
+    case 'SET_COMMENT':
+      return { ...state, comment: action.payload };
+    case 'TOGGLE_REVIEW_FORM':
+      return { ...state, showReviewForm: !state.showReviewForm };
+    case 'SUBMIT_REVIEW':
+      console.log('Review submitted with rating:', state.rating);
+      console.log('Review comment:', state.comment);
+      return { ...state, rating: 0, comment: '', showReviewForm: false };
+    default:
+      return state;
+  }
+};
+
+// Initial state for the reducer
+const initialState = {
+  rating: 0,
+  comment: '',
+  showReviewForm: false,
+};
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -34,10 +59,11 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-const EventCard = ({ event, isEventOwner,isParticipation }) => {
-  const [expanded, setExpanded] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isModalOpen, setModalOpen] = useState(false);
+const EventCard = ({ event, isEventOwner, isParticipation }) => {
+  const [expanded, setExpanded] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isModalOpen, setModalOpen] = React.useState(false);
+  const [state, dispatch] = useReducer(reviewReducer, initialState);
   const authData = useContext(AuthContext);
   const theme = useTheme();
 
@@ -63,13 +89,28 @@ const EventCard = ({ event, isEventOwner,isParticipation }) => {
   };
 
   const handleParticipateClick = async () => {
-    try{
-    const profileId = (await getUserProfile(authData.user.accessToken,authData.user.userId)).id;
-    const response = await participate(authData.user.accessToken,event.id,profileId);
+    try {
+      const profileId = (await getUserProfile(authData.user.accessToken, authData.user.userId)).id;
+      const response = await participate(authData.user.accessToken, event.id, profileId);
+    } catch (error) {
+      console.log(error);
     }
-    catch(error){
-      console.log(error)
-    }
+  };
+
+  const handleRatingChange = (event, newValue) => {
+    dispatch({ type: 'SET_RATING', payload: newValue });
+  };
+
+  const handleCommentChange = (event) => {
+    dispatch({ type: 'SET_COMMENT', payload: event.target.value });
+  };
+
+  const handleReviewFormToggle = () => {
+    dispatch({ type: 'TOGGLE_REVIEW_FORM' });
+  };
+
+  const handleReviewSubmit = () => {
+    dispatch({ type: 'SUBMIT_REVIEW' });
   };
 
   return (
@@ -92,11 +133,10 @@ const EventCard = ({ event, isEventOwner,isParticipation }) => {
                 onClose={handleMenuClose}
               >
                 <MenuItem onClick={handleViewParticipants}>View Participants</MenuItem>
-                {/* Add more menu items here if needed */}
               </Menu>
             </>
           ) : (
-            !isParticipation ? <Button onClick={handleParticipateClick}>Participate</Button>:null
+            !isParticipation ? <Button onClick={handleParticipateClick}>Participate</Button> : <Button onClick={handleReviewFormToggle}>Add Review</Button>
           )
         }
         title={event.title}
@@ -131,8 +171,31 @@ const EventCard = ({ event, isEventOwner,isParticipation }) => {
         onClose={handleModalClose}
         event={event}
       />
-      {/* Conditionally render Reviews component for non-owners */}
       {!isEventOwner && <Reviews eventId={event.id} />}
+      {isParticipation && !isEventOwner && state.showReviewForm && (
+        <CardContent>
+          <Typography variant="h6">Submit Your Review</Typography>
+          <Rating
+            value={state.rating}
+            onChange={handleRatingChange}
+            size="large"
+            precision={0.5}
+          />
+          <TextField
+            label="Comment"
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            value={state.comment}
+            onChange={handleCommentChange}
+          />
+          <Button variant="contained" color="primary" onClick={handleReviewSubmit}>
+            Submit Review
+          </Button>
+        </CardContent>
+      )}
     </Card>
   );
 };

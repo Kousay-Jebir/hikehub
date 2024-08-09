@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from './entities/review.entity';
@@ -24,6 +24,13 @@ export class ReviewsService {
     const event = await this.eventService.findOne(eventId);
     if (!event) {
       throw new NotFoundException('Event not found');
+    }
+
+    // Check if the event has ended
+    const currentDate = new Date();
+    const eventEndDate = new Date(event.endDate); // Assuming event.endDate is in ISO format
+    if (currentDate < eventEndDate) {
+      throw new BadRequestException('Cannot post a review before the event has ended');
     }
 
     // Check if the user profile exists using UserProfileService
