@@ -22,6 +22,8 @@ import { Button, TextField, Rating } from '@mui/material';
 import participate from '../api/participation-management/services/participate';
 import AuthContext from '../auth/context/AuthContext';
 import getUserProfile from '../api/profile-management/services/getUserProfile';
+import postReview from '../api/review-management/services/postReview';
+import { useNotificationError, useNotificationSuccess } from '../shared/context/NotificationContext';
 
 // Reducer function
 const reviewReducer = (state, action) => {
@@ -64,6 +66,8 @@ const EventCard = ({ event, isEventOwner, isParticipation }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isModalOpen, setModalOpen] = React.useState(false);
   const [state, dispatch] = useReducer(reviewReducer, initialState);
+  const showSuccess = useNotificationSuccess();
+  const showError = useNotificationError();
   const authData = useContext(AuthContext);
   const theme = useTheme();
 
@@ -109,8 +113,17 @@ const EventCard = ({ event, isEventOwner, isParticipation }) => {
     dispatch({ type: 'TOGGLE_REVIEW_FORM' });
   };
 
-  const handleReviewSubmit = () => {
+  const handleReviewSubmit = async () => {
+    try{
+    const profileId = (await getUserProfile(authData.user.accessToken, authData.user.userId)).id;
+    const response = await postReview(authData.user.accessToken,event.id,profileId,state.rating,state.comment)
     dispatch({ type: 'SUBMIT_REVIEW' });
+    showSuccess('Review posted successfully');
+    }
+    catch(error){
+      showError(error.response.data.message)
+      console.log(error.response.data.message)
+    }
   };
 
   return (

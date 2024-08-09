@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from './entities/review.entity';
@@ -25,11 +25,21 @@ export class ReviewsService {
     if (!event) {
       throw new NotFoundException('Event not found');
     }
-
+    //Check if there is a participation for this user
+    const participations = await this.eventService.getParticipations(eventId);
+    console.log(participations)
+    const participation = participations.filter((value)=>{return (value.userProfileId === userProfileId)});
+    console.log(participation)
+    if(participation.length === 0) {
+      throw new UnauthorizedException("You haven't participated to this event !");
+    }
+    if(participation && !participation[0].didAttend) {
+      throw new UnauthorizedException("You were absent to this event !");
+    }
     // Check if the event has ended
     const currentDate = new Date();
     const eventEndDate = new Date(event.endDate); // Assuming event.endDate is in ISO format
-    if (currentDate < eventEndDate) {
+    if (currentDate > eventEndDate) {
       throw new BadRequestException('Cannot post a review before the event has ended');
     }
 
