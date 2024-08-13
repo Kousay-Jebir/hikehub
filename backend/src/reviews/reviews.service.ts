@@ -7,6 +7,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { EventsService } from 'src/events/events.service';
 import { UserProfilesService } from 'src/user-profiles/user-profiles.service';
 import { ConflictException } from '@nestjs/common';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class ReviewsService {
@@ -15,6 +16,7 @@ export class ReviewsService {
     private readonly reviewRepository: Repository<Review>,
     private readonly eventService: EventsService,
     private readonly userProfileService: UserProfilesService,
+    private readonly notificationsService: NotificationsService
   ) {}
 
 
@@ -66,7 +68,7 @@ export class ReviewsService {
       comment,
       stars,
     });
-
+    this.notificationsService.addNotification(event.organizerId, `New review for your event: ${createReviewDto}`);
     return this.reviewRepository.save(review);
   }
 

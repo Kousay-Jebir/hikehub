@@ -22,6 +22,8 @@ import { Review } from './reviews/entities/review.entity';
 import { Location } from './locations/entities/location.entity';
 import { UserSetting } from './user-settings/entities/user-setting.entity';
 import { SearchModule } from './search-engine/search.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { Notification } from './notifications/notification.entity';
 
 @Module({
   imports: [
@@ -33,7 +35,7 @@ import { SearchModule } from './search-engine/search.module';
       username: 'user',
       password: '123456',
       database: 'hikehubdb',
-      entities: [User,UserProfile,OrganizationProfile,Hike,Event,Participation,Review,Location,UserSetting],
+      entities: [User,UserProfile,OrganizationProfile,Hike,Event,Participation,Review,Location,UserSetting,Notification],
       synchronize: true,
     }),
     AuthModule,
@@ -45,7 +47,8 @@ import { SearchModule } from './search-engine/search.module';
     ParticipationsModule,
     ReviewsModule,
     OrganizationProfilesModule,
-    SearchModule
+    SearchModule,
+    NotificationsModule
   ],
   controllers: [AppController],
   providers: [AppService],

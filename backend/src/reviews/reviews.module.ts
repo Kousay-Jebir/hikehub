@@ -5,8 +5,9 @@ import { Review } from './entities/review.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventsModule } from 'src/events/events.module';
 import { UserProfilesModule } from 'src/user-profiles/user-profiles.module';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Review]),EventsModule,UserProfilesModule],
+  imports: [TypeOrmModule.forFeature([Review]),EventsModule,UserProfilesModule,NotificationsModule],
   controllers: [ReviewsController],
   providers: [ReviewsService],
 })

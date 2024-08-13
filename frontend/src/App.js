@@ -28,6 +28,7 @@ import OrganizatorProfile from './profile-management/OrganizatorProfile';
 import LandingPage from './home/LandingPage';
 import EventCardRenderer from './event-management/EventCardRenderer';
 import Participations from './participation-management/Participations';
+import ReviewNotifications from './notification-management/ReviewNotifications';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -59,6 +60,7 @@ function App() {
       <AuthProvider>
         <ThemeProvider theme={theme}>
           <div className="App">
+            <ReviewNotifications></ReviewNotifications>
             <CssBaseline/>
       
             {/* {
