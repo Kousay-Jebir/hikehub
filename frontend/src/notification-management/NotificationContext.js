@@ -26,6 +26,9 @@ export const SSENotificationProvider = ({ children }) => {
                         setNotifications(pastNotifications.map(notification => ({
                             id: notification.id,
                             message: notification.message,
+                            createdAt: notification.createdAt,
+                            organizerId: notification.organizerId,
+                            read: notification.read, // Assuming you have a `read` field
                         })));
                     } else {
                         console.error('Failed to fetch notifications:', response.statusText);
@@ -36,8 +39,12 @@ export const SSENotificationProvider = ({ children }) => {
 
                     // Handle incoming messages
                     eventSource.onmessage = (event) => {
-                        const message = event.data;
-                        setNotifications(prevNotifications => [...prevNotifications, { message }]);
+                        try {
+                            const notification = JSON.parse(event.data); // Parse the incoming message
+                            setNotifications(prevNotifications => [...prevNotifications, notification]);
+                        } catch (error) {
+                            console.error('Error parsing SSE message:', error);
+                        }
                     };
 
                     // Handle errors

@@ -10,19 +10,24 @@ import {
   MenuItem,
   Avatar,
   Button,
+  Badge,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AdbIcon from '@mui/icons-material/Adb';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AuthContext from '../../auth/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import SearchComponent from '../components/SearchComponent'; // Import the new SearchComponent
 import Search from '../search-engine/Search';
-
+import NotificationPopover from '../../notification-management/NotificationPopover';
+import { useNotifications } from '../../notification-management/NotificationContext';
 export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNotifications, setAnchorElNotifications] = useState(null);
   const authData = useContext(AuthContext);
   const { isLoggedIn, user } = authData;
+  const notifications = useNotifications().notifications;
+  const unreadCount = notifications.length
   const navigate = useNavigate();
   const settings = ['Profile', 'Account', 'Logout'];
   const pages = isLoggedIn ? ['Feed', 'Recommendations'] : ['Login', 'Signup'];
@@ -33,6 +38,10 @@ export default function Navbar() {
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+
+  const handleOpenNotifications = (event) => {
+    setAnchorElNotifications(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -56,9 +65,7 @@ export default function Navbar() {
       }
     } else if (setting === 'Logout') {
       authData.logout();
-      navigate('/')
-      console.log('Logout');
-      // You can also add logout logic here
+      navigate('/');
     }
   };
 
@@ -86,7 +93,7 @@ export default function Navbar() {
           </Typography>
 
           {/* Search Component */}
-          <Search></Search>
+          <Search />
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -102,10 +109,32 @@ export default function Navbar() {
                   ) : (
                     <Button onClick={() => { navigate('/events/participations'); }} sx={{ mx: 1, color: 'inherit' }}>PARTICIPATIONS</Button>
                   )}
-                  {/* <Button onClick={() => { navigate('/'); }} sx={{ mx: 1, color: 'inherit' }}>RECOMMENDATIONS</Button> */}
                 </>
               )}
             </Box>
+
+            {isLoggedIn && user.roles.includes('organizer') && (
+              <>
+                <IconButton
+                  size="large"
+                  aria-label="show notifications"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNotifications}
+                  color="inherit"
+                  sx={{ ml: 1 }}
+                >
+                  <Badge badgeContent={unreadCount} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+
+                <NotificationPopover
+                  anchorEl={anchorElNotifications}
+                  handleClose={() => setAnchorElNotifications(null)}
+                />
+              </>
+            )}
 
             {isLoggedIn && (
               <IconButton

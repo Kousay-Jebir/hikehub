@@ -6,7 +6,7 @@ import { Subject, Observable } from 'rxjs';
 
 @Injectable()
 export class NotificationsService {
-  private readonly notificationsSubject: { [key: number]: Subject<string> } = {};
+  private readonly notificationsSubject: { [key: number]: Subject<any> } = {};
 
   constructor(
     @InjectRepository(Notification)
@@ -15,19 +15,27 @@ export class NotificationsService {
 
   // Store a new notification
   async addNotification(organizerId: number, message: string) {
-    // Persist the notification in the database
+    // Create and persist the notification in the database
     const notification = this.notificationsRepository.create({
       organizerId,
       message,
       createdAt: new Date(),
     });
     await this.notificationsRepository.save(notification);
-
+  
     // Broadcast the notification to currently connected clients
+    const notificationData = {
+      id: notification.id,
+      organizerId: notification.organizerId,
+      message: notification.message,
+      createdAt: notification.createdAt,
+    };
+  
     if (this.notificationsSubject[organizerId]) {
-      this.notificationsSubject[organizerId].next(message);
+      this.notificationsSubject[organizerId].next(notificationData);
     }
   }
+  
 
   // Get notifications for an organizer
   async getNotifications(organizerId: number): Promise<Notification[]> {
