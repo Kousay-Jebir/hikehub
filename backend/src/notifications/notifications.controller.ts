@@ -1,4 +1,4 @@
-import { Controller, Sse, Param, Get } from '@nestjs/common';
+import { Controller, Sse, Param, Get, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { Observable, map } from 'rxjs';
 import { MessageEvent } from '@nestjs/common';
@@ -25,5 +25,11 @@ export class NotificationsController {
       message: notification.message,
       createdAt: notification.createdAt,
     }));
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT) // Send a 204 No Content status on successful deletion
+  async deleteNotification(@Param('id') id: number): Promise<void> {
+    await this.notificationsService.deleteNotification(id);
   }
 }

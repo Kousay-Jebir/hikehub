@@ -44,4 +44,13 @@ export class NotificationsService {
     }
     return this.notificationsSubject[organizerId].asObservable();
   }
+
+  async deleteNotification(id: number): Promise<void> {
+    try {
+      await this.notificationsRepository.delete(id);
+    } catch (error) {
+      // Handle error if needed
+      throw new Error(`Failed to delete notification with ID ${id}: ${error.message}`);
+    }
+  }
 }

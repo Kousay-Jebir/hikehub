@@ -29,6 +29,7 @@ import LandingPage from './home/LandingPage';
 import EventCardRenderer from './event-management/EventCardRenderer';
 import Participations from './participation-management/Participations';
 import ReviewNotifications from './notification-management/ReviewNotifications';
+import { SSENotificationProvider } from './notification-management/NotificationContext';
 function App() {
   const isSignin = true;
   const theme = createTheme({
@@ -58,9 +59,10 @@ function App() {
   return (
     <NotificationProvider>
       <AuthProvider>
+        <SSENotificationProvider>
         <ThemeProvider theme={theme}>
           <div className="App">
-            <ReviewNotifications></ReviewNotifications>
+            {/* <ReviewNotifications></ReviewNotifications> */}
             <CssBaseline/>
       
             {/* {
@@ -104,7 +106,9 @@ function App() {
            */}
           </div>
         </ThemeProvider>
+        </SSENotificationProvider>
       </AuthProvider>
+      
     </NotificationProvider>
   );
 }
