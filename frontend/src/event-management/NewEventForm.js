@@ -5,8 +5,10 @@ import MapComponent from "../lib/leaflet/MapComponent";
 import createEvent from "../api/event-management/services/createEvent";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-
+import { useNotificationError, useNotificationSuccess } from "../shared/context/NotificationContext";
 export default function NewEventForm() {
+  const setSuccess = useNotificationSuccess();
+  const setError = useNotificationError();
   const theme = useTheme();
   const authData = useContext(AuthContext);
   const [title, setTitle] = useState("");
@@ -49,7 +51,13 @@ export default function NewEventForm() {
 
     console.log("Processed Event Data:", eventData);
     console.log(hikes);
-    console.log(await createEvent(authData.user.accessToken, authData.user.userId, eventData));
+    try{
+    await createEvent(authData.user.accessToken, authData.user.userId, eventData)
+    setSuccess("Event created successfully");
+    }
+    catch(error){
+      setError(error.error.response.data.message);
+    }
   };
 
   const handleHikeChange = (index, field, value) => {
