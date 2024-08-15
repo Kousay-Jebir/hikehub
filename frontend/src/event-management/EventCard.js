@@ -62,6 +62,8 @@ const ExpandMore = styled((props) => {
 }));
 
 const EventCard = ({ event, isEventOwner, isParticipation }) => {
+  const setSuccess = useNotificationSuccess();
+  const setError = useNotificationError();
   const [expanded, setExpanded] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isModalOpen, setModalOpen] = React.useState(false);
@@ -96,8 +98,10 @@ const EventCard = ({ event, isEventOwner, isParticipation }) => {
     try {
       const profileId = (await getUserProfile(authData.user.accessToken, authData.user.userId)).id;
       const response = await participate(authData.user.accessToken, event.id, profileId);
+      setSuccess("Your participation is successful !");
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
     }
   };
 
