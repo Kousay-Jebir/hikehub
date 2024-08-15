@@ -37,6 +37,7 @@ const NotificationPopover = ({ anchorEl, handleClose }) => {
         notifications.map((notification) => (
           <MenuItem key={notification.id} onClick={() => handleNotificationClick(notification.id)}>
             <ListItemText primary={notification.message} />
+            {console.log(notification)}
           </MenuItem>
         ))
       ) : (

@@ -68,7 +68,9 @@ export class ReviewsService {
       comment,
       stars,
     });
-    this.notificationsService.addNotification(event.organizerId, `New review for your event: ${createReviewDto}`);
+    const userName = await this.userProfileService.getUserNameByUserProfileId(userProfile.id);
+    const eventTitle = event.title
+    this.notificationsService.addNotification(event.organizerId, `${userName} reviewed your event(${eventTitle})`);
     return this.reviewRepository.save(review);
   }
 
