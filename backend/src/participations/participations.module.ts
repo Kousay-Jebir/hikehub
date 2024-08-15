@@ -5,8 +5,9 @@ import { Participation } from './entities/participation.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserProfilesModule } from 'src/user-profiles/user-profiles.module';
 import { EventsModule } from 'src/events/events.module';
+import { OrganizationProfilesModule } from 'src/organization-profiles/organization-profiles.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([Participation]),UserProfilesModule,EventsModule],
+  imports: [TypeOrmModule.forFeature([Participation]),UserProfilesModule,EventsModule,OrganizationProfilesModule],
   controllers: [ParticipationsController],
   providers: [ParticipationsService],
 })

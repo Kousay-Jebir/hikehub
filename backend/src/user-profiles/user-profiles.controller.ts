@@ -17,20 +17,20 @@ export class UserProfilesController {
     return this.userProfilesService.getUserIdByUserProfileID(id);
   }
 
-  @Post()
+  /* @Post()
   create(@Body() createUserProfileDto: CreateUserProfileDto) {
     return this.userProfilesService.create(createUserProfileDto);
-  }
+  } */
 
-  @Get()
+  /* @Get()
   findAll() {
     return this.userProfilesService.findAll();
-  }
+  } */
 
-  @Get(':id')
+  /* @Get(':id')
   findOne(@Param('id',ParseIntPipe) id: number) {
     return this.userProfilesService.findOne(id);
-  }
+  } */
   @ApiBearerAuth()
   @UseGuards(AuthGuard,RolesGuard)
   @Ownership()

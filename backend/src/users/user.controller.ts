@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserInfoInterceptor } from 'src/user-info/user-info.interceptor';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Ownership } from 'src/role/ownership.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -32,15 +33,17 @@ export class UsersController {
     return info;
   }
 
-  @Get(':id')
+  /* @Get(':id')
   async findById(@Param('id',ParseIntPipe) id: number): Promise<User> {
     const user = await this.usersService.findById(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
     return user;
-  }
+  } */
 
+  @UseGuards(AuthGuard)
+  @Ownership()
   @Delete(':id')
   async remove(@Param('id',ParseIntPipe) id: number): Promise<void> {
     const user = await this.usersService.findById(id);

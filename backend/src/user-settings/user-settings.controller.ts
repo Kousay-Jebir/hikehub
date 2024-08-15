@@ -17,20 +17,20 @@ export class UserSettingsController {
     private readonly  userProfileService:UserProfilesService
   ) {}
 
-  @Post()
+  /* @Post()
   create(@Body() createUserSettingDto: CreateUserSettingDto) {
     return this.userSettingsService.create(createUserSettingDto);
-  }
+  } */
 
-  @Get()
+  /* @Get()
   findAll() {
     return this.userSettingsService.findAll();
-  }
+  } */
 
-  @Get(':id')
+  /* @Get(':id')
   findOne(@Param('id',ParseIntPipe) id: number) {
     return this.userSettingsService.findOne(id);
-  }
+  } */
 
 
   @ApiBearerAuth()

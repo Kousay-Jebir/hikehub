@@ -112,6 +112,13 @@ async removeParticipation(eventId: number, userProfileId: number): Promise<void>
 
 
 
+async getEvent(eventId:number):Promise<any>{
+  const event = await this.eventsService.findOne(eventId);
+  if(event){
+    return event
+  }
+  return null;
+}
 
 
 

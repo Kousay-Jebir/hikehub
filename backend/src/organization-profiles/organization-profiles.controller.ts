@@ -13,10 +13,10 @@ import { Role } from 'src/enums/role.enum';
 export class OrganizationProfilesController {
   constructor(private readonly organizationProfilesService: OrganizationProfilesService) {}
 
-  @Post()
+  /* @Post()
   create(@Body() createOrganizationProfileDto: CreateOrganizationProfileDto) {
     return this.organizationProfilesService.create(createOrganizationProfileDto);
-  }
+  } */
 
   @Get()
   findAll() {
